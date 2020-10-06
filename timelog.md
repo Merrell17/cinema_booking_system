@@ -5,12 +5,6 @@
 * 2310969M
 * Mireilla Bikanga Ada
 
-## Guidance
-
-* This file contains the time log for your project. It will be submitted along with your final dissertation.
-* **YOU MUST KEEP THIS UP TO DATE AND UNDER VERSION CONTROL.**
-* This timelog should be filled out honestly, regularly (daily) and accurately. It is for *your* benefit.
-* Follow the structure provided, grouping time by weeks.  Quantise time to the half hour.
 
 ## Week 1
 
@@ -25,7 +19,7 @@
 ## Week 2
 
 ## 05 October 2020
-* *0.25 hour* Create Github repo
+* *0.5 hour* Create Github repo
 
 ## 06 October 2020
 * *0.5 hour* Group meeting with supervisor
