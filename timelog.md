@@ -1,0 +1,34 @@
+# Timelog
+
+* CINEMA BOOKING SYSTEM
+* HUGH MERRELL
+* 2310969M
+* Mireilla Bikanga Ada
+
+## Guidance
+
+* This file contains the time log for your project. It will be submitted along with your final dissertation.
+* **YOU MUST KEEP THIS UP TO DATE AND UNDER VERSION CONTROL.**
+* This timelog should be filled out honestly, regularly (daily) and accurately. It is for *your* benefit.
+* Follow the structure provided, grouping time by weeks.  Quantise time to the half hour.
+
+## Week 1
+
+## 29 September 2020
+* *1 hour* Read project notes and current cinema trends
+* *0.5 hour* initial meeting with supervisor
+
+## 03 October 2020
+* *3 Hours* Looked at cinema booking systems, effects of covid and possible ways to take the project e.g web app or phone app
+* *1 Hour* Looked at past disertations 
+
+## Week 2
+
+## 05 October 2020
+* *0.25 hour* Create Github repo
+
+## 06 October 2020
+* *0.5 hour* Group meeting with supervisor
+* *0.5 hour* Prepare For Meeting
+* *0.5 hour* Main meeting with supervisor
+* *0.5 hour* Flesh out notes on what needs to be done and update timelog
