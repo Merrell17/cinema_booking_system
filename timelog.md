@@ -26,3 +26,5 @@
 * *0.5 hour* Prepare For Meeting
 * *0.5 hour* Main meeting with supervisor
 * *0.5 hour* Flesh out notes on what needs to be done and update timelog
+* *1 hour* Read Hotel Booking Dissertation in full 
+
