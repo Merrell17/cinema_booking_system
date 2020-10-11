@@ -28,3 +28,9 @@
 * *0.5 hour* Flesh out notes on what needs to be done and update timelog
 * *1 hour* Read Hotel Booking Dissertation in full 
 
+## 09 October 2020
+* *2 hours* Looking at pros and cons of Vue and Odeon
+
+## 11 October 2020
+* *2 hours* Looking at pros and cons of Vue and Odeon
+
