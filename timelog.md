@@ -29,7 +29,7 @@
 * *1 hour* Read Hotel Booking Dissertation in full 
 
 ## 09 October 2020
-* *2 hours* Looking at pros and cons of Vue and Odeon
+* *2 hours* Looking at pros and cons of Vue and Odeon including mobile apps
 
 ## 11 October 2020
 * *1 hour* Reading Game Based Learning Dissertation in full
