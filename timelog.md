@@ -32,5 +32,7 @@
 * *2 hours* Looking at pros and cons of Vue and Odeon
 
 ## 11 October 2020
-* *2 hours* Looking at pros and cons of Vue and Odeon
+* *1 hour* Reading Game Based Learning Dissertation in full
+## 12 October 2020
+* *3 hours* Reading about cinemas, effects of covid, film delays, streaming competitors and typing up background document.
 
