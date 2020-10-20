@@ -35,4 +35,9 @@
 * *1 hour* Reading Game Based Learning Dissertation in full
 ## 12 October 2020
 * *3 hours* Reading about cinemas, effects of covid, film delays, streaming competitors and typing up background document.
-
+## 18 October 2020
+* *3 hours* Examining existing 3rd party ticket selling websites and the possiblility of developing a web app that sold tickets from multiple sites 
+## 19 October 2020
+* *3 hours* Deciding what direction to take the project and started created requirements 
+## 20 October 2020
+* *1.5 hours* Looking further at requirements + meeting prep
