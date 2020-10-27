@@ -47,3 +47,21 @@
 * *3 hours* Deciding what direction to take the project and started created requirements 
 ## 20 October 2020
 * *1.5 hours* Looking further at requirements + meeting prep
+
+## 21 October 2020 
+* *2.5* Creating and distributing google forum to refine requirements
+
+## 23 October 2020 
+* *3 hours* Re-learning how to make ER diagrams + make ER diagram for cinema booking system
+
+## 25 October 2020 
+* *1 hours* Examine google document results + refine requirements 
+* *1.5 hours* Write some user stories and software process (agile vs waterfall) 
+
+## 27 October 2020
+
+* *1 hour* Begin wireframe creation process
+
+
+
+
