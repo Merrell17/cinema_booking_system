@@ -62,6 +62,14 @@
 
 * *1 hour* Begin wireframe creation process
 
+## 31 October 2020
 
+* *2 hour* Finish Wireframes
 
+## 1 November 2020
 
+* *2 hour* Create System Architecture 
+
+## 2 November 2020
+
+* *1 hour* Database Design
