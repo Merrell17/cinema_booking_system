@@ -73,3 +73,15 @@
 ## 2 November 2020
 
 * *1 hour* Database Design
+
+
+## 7 November 2020
+
+* *2 hour* Modelled addtions to db in drawio and recreated main db in Vertabelo with new payment, address and cinema tables 
+
+## 8 November 2020
+
+* *7 hours* Learnt about activity diagrams and made one for site. Created site map and editted System Architecture diagram.
+
+## 9 November 2020
+* *2 hours* Setting up flask on desktop and completed part of tutorial
