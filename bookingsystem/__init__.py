@@ -1,32 +1,48 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from flask_mysqldb import MySQL
 
 
-def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
+app = Flask(__name__)
 
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = '1234'
+app.config['MYSQL_DB'] = 'flaskapp'
+app.config['MYSQL_HOST'] = 'localhost'
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return render_template('index.html')
+mysql = MySQL()
+mysql.init_app(app)
 
-    return app
+address_cinema_id = 3
+
+
+@app.route('/', methods=['GET', 'POST'])
+def hello():
+    if request.method == "POST":
+        address_details = request.form
+        cinema_name = address_details['name']
+        address1 = address_details['address1']
+        address2 = address_details['address2']
+        city = address_details['city']
+        county = address_details['county']
+        postcode = address_details['postcode']
+        global address_cinema_id
+        cur = mysql.connection.cursor()
+
+        cur.execute("INSERT INTO address(id,address1, address2, city, county, postcode) "
+                    "VALUES(%s,%s, %s, %s, %s, %s)", (address_cinema_id, address1, address2, city, county, postcode))
+        
+        cur.execute("INSERT INTO cinema(id,address_id,name) "
+                    "VALUES(%s, %s, %s)", (address_cinema_id, address_cinema_id, cinema_name))
+
+        mysql.connection.commit()
+        cur.close()
+        address_cinema_id += 1
+        return 'success'
+    return render_template('addCinema.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
