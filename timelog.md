@@ -85,3 +85,14 @@
 
 ## 9 November 2020
 * *2 hours* Setting up flask on desktop and completed part of tutorial
+
+## 12 November 2020
+* *2 hours* Decided on sprint duration and created issues. Installed needed packages, spent some time looking at the offical Flask tutorial and got everything ready to start developing.
+* *6 hours* Learned how to get MySQL working with flask, many problems installing MySQL with flask. Eventually got MySQL installed properly but more errors with accounts and errors with Flask.   
+* *2 hours* Errors with flask's template engine Werkzeug, fixes on stackoverflow all say the same thing which i have matched, but error still occuring.
+
+## 13 November 2020
+* *6 hours* Error gone first time after running program in the morning, restart must have fixed something. Created a database on localhost, connected it to app, built addCinema.html - some issues and implmentation is not very elegant but eventually got the HTLML form working to populate the database. 
+
+## 17 November 2020
+* *2 hours* So far all development done on desktop PC. Got project running on laptop which uses a different OS. Some more complications with MySQL but eventually got it running. 
