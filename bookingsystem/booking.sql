@@ -1,5 +1,3 @@
--- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2020-11-12 16:49:55.924
 
 -- tables
 -- Table: address

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<label for="cinemas">Choose a cinema</label>
+
+    <select name="cinemas" id="cinemas">
+        {% for cinema in cinemaDetails %}
+        <option value="{{ cinema }}">{{cinema[2]}}</option>
+        {% endfor %}
+    </select>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<h1>Add a Screen</h1>
+
+
+
+
+
+<form method="POST" action="">
+    <label for="cinemas">Choose a cinema</label>
+
+    <select name="cinemas" id="cinemas">
+        {% for cinema in cinemaDetails %}
+        <option value="{{ cinema[0] }}">{{cinema[0]}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+        Screen Name <input type="text" name="name" />
+        <br>
+
+        Number of Rows <input type="text" name="row_count" />
+        <br>
+        Number of Columns <input type="text" name="column_count" />
+        <br>
+
+        <input type="submit">
+    </form>
+
+{% endblock %}
