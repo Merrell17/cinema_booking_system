@@ -96,3 +96,14 @@
 
 ## 17 November 2020
 * *2 hours* So far all development done on desktop PC. Got project running on laptop which uses a different OS. Some more complications with MySQL but eventually got it running. 
+
+## 21 November 2020
+* *2 hours* HTML, CSS & JS Guides
+* *2 hours* Trying to make nav bar - lots of erros with style sheet not linking properly and then not styling properly.
+
+## 22 November 2020
+* *3 hours* Stopped trying to make nav bar as it was taking up too much time and not providing any functionality to the site. Began working on Add Screen page, more issues with MySQL whilst trying to reformat the DB. Page isnt working quite right
+
+## 24 November 2020
+* *2 hours* Getting ready for meeting nav bar looks as it should on laptop and an issue with Add Screen has also fixed itself. New issue to solve with SQL query giving an error.
+ 
