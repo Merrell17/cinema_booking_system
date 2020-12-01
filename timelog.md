@@ -107,3 +107,12 @@
 ## 24 November 2020
 * *2 hours* Getting ready for meeting nav bar looks as it should on laptop and an issue with Add Screen has also fixed itself. New issue to solve with SQL query giving an error.
  
+## 30 November 2020
+* *2.5 hours* Learning more CSS and Javascript and doing more work on Nav bar which is now almost complete
+* *2 hours* Eventually fixied error when searching the database.
+
+## 1 Dember 2020
+* *2.5 hours* Add screen page and Add film page now working. 
+* *1 hours* Started create a screening page + meeting prep  
+
+ 
