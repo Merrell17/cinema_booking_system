@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% block body %}
+
+<h1>Create a Screening</h1>
+<form method="POST" action="">
+    <label for="cinemas">Choose a cinema</label>
+
+    <select name="cinemas" id="cinemas">
+        {% for cinema in cinemaDetails %}
+        <option value="{{ cinema[0] }}">{{cinema[2]}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="films">Choose a Film</label>
+
+    <select name="films" id="films">
+        {% for film in filmDetails %}
+        <option value="{{ film[0] }}">{{film[1]}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+     Screen Number <input type="text" name="name" />
+        <br>
+
+     Start Time<input type="datetime-local" name="filmtime">/>
+        <br>
+
+
+        <input type="submit">
+    </form>
+
+
+
+{% endblock %}}

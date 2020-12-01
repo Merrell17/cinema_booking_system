@@ -13,9 +13,9 @@
 <body>
     <nav>
         <div class="logo">
-            <h4>Cinema Booking</h4>
+            <h4>Cinema Booking System</h4>
         </div>
-        <ul>
+        <ul class="nav-links">
             <li>
                 <a href="selectcinema">Select Cinema</a>
             </li>
@@ -26,12 +26,20 @@
                 <a href="addscreens">Add a Screen</a>
             </li>
             <li>
-                <a href="#">Create a Screening</a>
+                <a href="createscreening">Create a Screening</a>
+            </li>
+            <li>
+                <a href="addfilm">Add a Film</a>
             </li>
         </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
     </nav>
 
-
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
     {% block body %}
     {% endblock %}
