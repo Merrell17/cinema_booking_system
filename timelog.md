@@ -109,7 +109,7 @@
  
 ## 30 November 2020
 * *2.5 hours* Learning more CSS and Javascript and doing more work on Nav bar which is now almost complete
-* *2 hours* Eventually fixied error when searching the database.
+* *2 hours* Eventually fixed error when searching the database.
 
 ## 1 Dember 2020
 * *2.5 hours* Add screen page and Add film page now working. 
