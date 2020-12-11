@@ -3,9 +3,7 @@ import os
 from flask import Flask, render_template, request, url_for
 from flask_mysqldb import MySQL
 
-
 app = Flask(__name__)
-
 
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
@@ -33,7 +31,7 @@ def add_cinema():
 
         cur.execute("INSERT INTO address(id,address1, address2, city, county, postcode) "
                     "VALUES(%s,%s, %s, %s, %s, %s)", (address_cinema_id, address1, address2, city, county, postcode))
-        
+
         cur.execute("INSERT INTO cinema(id,address_id,name) "
                     "VALUES(%s, %s, %s)", (address_cinema_id, address_cinema_id, cinema_name))
 
@@ -65,12 +63,6 @@ def add_screen():
         cinema_details = cur.fetchall()
     else:
         cinema_details = []
-
-    films = cur.execute("SELECT * FROM movie")
-    if films > 0:
-        film_details = cur.fetchall()
-    else:
-        film_details = []
 
     if request.method == "POST":
         screen_details = request.form
@@ -105,22 +97,37 @@ def add_film():
         cur.close()
     return render_template('addFilm.html')
 
+
 @app.route('/createscreening', methods=['GET', 'POST'])
 def create_screening():
-    cur = mysql.connection.cursor()
-    cinemas = cur.execute("SELECT * FROM cinema")
-    if cinemas > 0:
-        cinema_details = cur.fetchall()
-    else:
-        cinema_details = []
 
+    cur = mysql.connection.cursor()
     films = cur.execute("SELECT * FROM movie")
     if films > 0:
         film_details = cur.fetchall()
     else:
         film_details = []
 
-    return render_template('createScreening.html', cinemaDetails=cinema_details, filmDetails=film_details)
+    auditorium_details = cur.execute('SELECT auditorium.id, name, screen_name FROM Auditorium '
+                                     'INNER JOIN Cinema ON auditorium.cinema_id = cinema.id')
+    auditorium_details = cur.fetchall()
+
+    if request.method == "POST":
+        cur = mysql.connection.cursor()
+        screening_details = request.form
+        screen_id = screening_details['screen']
+        film_id = screening_details['films']
+        start_time = screening_details['film_time']
+
+        cur.execute("INSERT INTO screening(movie_id, auditorium_id, screening_start) "
+                    "VALUES(%s, %s, %s)", (film_id, screen_id, start_time))
+        mysql.connection.commit()
+        cur.close()
+
+
+
+    return render_template('createScreening.html', filmDetails=film_details,
+                           auditoriumDetails = auditorium_details )
 
 
 if __name__ == '__main__':
