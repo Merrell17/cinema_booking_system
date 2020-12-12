@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 venv/
 
+=======
+>>>>>>> feature
 *.pyc
 __pycache__/
 
@@ -11,4 +14,8 @@ htmlcov/
 
 dist/
 build/
+<<<<<<< HEAD
 *.egg-info/
+=======
+*.egg-info/
+>>>>>>> feature

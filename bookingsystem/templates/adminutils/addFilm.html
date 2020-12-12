@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add a Film</title>
+
+</head>
+
+{% block body %}
+
+<p class="formfield">
+<h1>Add a Film</h1>
+    <form method="POST" action="">
+        Title <input type="text" name="title" />
+        <br>
+        Director <input type="text" name="director" />
+        <br>
+        Description<input type="text" name="description" />
+        <br>
+        Duration (minutes) <input type="text" name="duration" />
+        <br>
+        Image <input type="file" name="movie_image" accept="image/*"/>
+        <br>
+        <input type="submit">
+    </form>
+</p>
+
+{% endblock %}
+</html>
