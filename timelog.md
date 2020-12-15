@@ -111,8 +111,23 @@
 * *2.5 hours* Learning more CSS and Javascript and doing more work on Nav bar which is now almost complete
 * *2 hours* Eventually fixed error when searching the database.
 
-## 1 Dember 2020
+## 1 December 2020
 * *2.5 hours* Add screen page and Add film page now working. 
 * *1 hours* Started create a screening page + meeting prep  
+
+## 10 December 2020
+* *4 Hours* Got create a screeening page to work: Issues with MySQL server and displaying cinemas correctly in order with screen numbers, managed to fix.
+
+## 12 December 2020
+* *7 Hours* Progressed with Flask tutorial, realised current implentation of project would cause issues down the line and used several bad practises.
+refactored all views and templates to use Flask's application factory along with blueprints, a far better design pattern.
+
+## 14 December 2020
+* *2 Hours* Desktop died, adjusted MySQL server setup and new depencencies on linux laptop to work with progess made
+* *3 Hours* Implemented backend authetication functionality - login, register and logout functionality using Session data. Currently an issue with 
+register form data not being posted to MySQL server so Login is not possible.
+* *2 Hours* Got Dynamic URL routing working with Cinema Time page. Began creating a data stucture to feed to .html to allow for times to be shown in the correct
+order. 
+
 
  
