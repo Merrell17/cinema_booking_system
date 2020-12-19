@@ -15,6 +15,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
+        fname = request.form['fname']
+        lname = request.form['lname']
         cur = db.connect.cursor()
         error = None
 
@@ -22,22 +25,58 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
-        elif cur.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
-        ).fetchone() is not None:
+        elif not email:
+            error = 'Email is required'
+        elif not fname or not lname:
+            error = 'Full name is required'
+
+        cur.execute('SELECT id FROM user WHERE username = (%s)', (username,))
+        if cur.fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
+        cur.execute('SELECT email FROM user WHERE email = (%s)', (email,))
+        if cur.fetchone() is not None:
+            error = 'Email {} is already taken.'.format(username)
+
         if error is None:
+
             cur.execute(
-                'INSERT INTO user (username, password) VALUES (?, ?)',
-                (username, generate_password_hash(password))
-            )
-            db.commit()
+                "INSERT INTO user(username, password, email, first_name, last_name, is_admin)"
+                "VALUES (%s, %s, %s, %s, %s, %s)",
+                (username, generate_password_hash(password), email, fname, lname, False))
+            db.connection.commit()
+            cur.close()
             return redirect(url_for('auth.login'))
 
         flash(error)
 
     return render_template('auth/register.html')
+
+
+@bp_auth.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        cur = db.connect.cursor()
+        error = None
+        user = cur.execute(
+            'SELECT * FROM user WHERE username = ?', (username,)
+        ).fetchone()
+
+        if user is None:
+            error = 'Incorrect username.'
+        elif not check_password_hash(user['password'], password):
+            error = 'Incorrect password.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = user['id']
+            return redirect(url_for('home'))
+
+        flash(error)
+
+    return render_template('auth/login.html')
 
 
 @bp_auth.before_app_request
@@ -56,3 +95,14 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view

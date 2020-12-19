@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 
 {% block body %}
+
+<form method="POST" action="">
 <label for="cinemas">Choose a cinema</label>
 
     <select name="cinemas" id="cinemas">
         {% for cinema in cinemaDetails %}
-        <option value="{{ cinema }}">{{cinema[2]}}</option>
+        <option value="{{ cinema[0] }}">{{cinema[2]}}</option>
         {% endfor %}
     </select>
+    <br>
+      <input type="submit">
+</form>
 {% endblock %}

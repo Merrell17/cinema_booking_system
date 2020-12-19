@@ -12,10 +12,10 @@ def create_app():
 
     app = Flask(__name__)
     admin = Admin(app, name='microblog', template_mode='bootstrap3')
-
+    app.config['SECRET_KEY'] = 'key'
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = '1234'
-    app.config['MYSQL_DB'] = 'flaskapp'
+    app.config['MYSQL_PASSWORD'] = 'helloworld'
+    app.config['MYSQL_DB'] = 'flask_app1'
     app.config['MYSQL_HOST'] = 'localhost'
     db.init_app(app)
 

@@ -1,9 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'adminBase.html' %}
 
 
 {% block body %}
 
     <h1>Add a Cinema</h1>
+    {% for message in get_flashed_messages() %}
+      <h1>{{ message }}</h1>
+    {% endfor %}
+
     <form method="POST" action="">
         Cinema Name <input type="text" name="name" />
         <br>
