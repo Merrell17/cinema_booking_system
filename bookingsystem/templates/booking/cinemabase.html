@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<body>
+    <h1>{{ cinemaName }}</h1>
+    <br>
+    <h3>Listings:</h3>
+    {%for a,b in filmTimes%}
+        <span>{{a}}</span>
+        {%for each, id in b %}
+            <ul>
+                <li>
+                    <a href = {{ url_for('booking.seat_select', screening=id) }}>{{ each }}</a>
+                </li>
+            </ul>
+             {%endfor%}
+        <br>
+    {%endfor%}
+
+</body>
+</html>
+{% endblock %}

@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect
+from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app
 from flask_mysqldb import MySQL
 from flask_admin import Admin
-
+import os
+import datetime
 from bookingsystem.extensions import db
 
 bp_admin = Blueprint('admin_utils', __name__, url_prefix='/adminutils', template_folder='templates/adminutils')
@@ -35,41 +36,27 @@ def add_cinema():
     return render_template('adminutils/addCinema.html')
 
 
-@bp_admin.route('selectcinema', methods=["GET", "POST"])
-def home():
-    cur = db.connection.cursor()
-    cinemas = cur.execute("SELECT * FROM cinema")
-    if cinemas > 0:
-        cinema_details = cur.fetchall()
-    else:
-        cinema_details = []
-    if request.method == "POST":
-        cinema_id = request.form['cinemas']
-        cur.execute("SELECT name FROM cinema WHERE id=(%s)", (cinema_id,))
-        results = list(cur)[0][0]
-        session['cinema_name'] = results
-        session['cinema_id'] = cinema_id
-        cinema_name_url = ''.join(results.split()).lower()
 
-        return redirect(url_for('admin_utils.cinema_times', name=cinema_name_url, ))
-
-    return render_template('adminutils/selectCinema.html', cinemaDetails=cinema_details)
-
-
+'''
 @bp_admin.route('/cinema/<name>')
 def cinema_times(name):
     cur = db.connection.cursor()
-    cur.execute("SELECT id FROM auditorium WHERE cinema_id=(%s)", session['cinema'])
+    cur.execute("SELECT id FROM auditorium WHERE cinema_id=(%s)", (session['cinema_name'],))
     screens = list(cur)
     screenings = []
     for row in screens:
         screen = row[0]
+        # And date > current_date
+        # Order by film_id, time
         cur.execute("SELECT * FROM screening WHERE auditorium_id=(%s)", (screen,))
         screenings.append(list(cur))
 
+    cur.close()
     screenings = [item for sublist in screenings for item in sublist]
 
     return render_template('cinemabase.html', cinemaName=session['cinema_name'])
+'''
+
 
 
 @bp_admin.route('addscreens', methods=['GET', 'POST'])
@@ -90,8 +77,17 @@ def add_screen():
 
         cur.execute("INSERT INTO auditorium(screen_name, cinema_id, row_count, column_count) "
                     "VALUES(%s, %s, %s, %s)", (screen_name, cinema_name, row_count, column_count))
-
         db.connection.commit()
+        cur.execute("SELECT max(id) FROM auditorium")
+        screen_id = cur.fetchone()[0]
+
+        for i in range(int(column_count)):
+            for j in range(int(row_count)):
+                cur.execute("INSERT INTO seat(`row`, `number`, auditorium_id) "
+                            "VALUES(%s, %s, %s)", (j, i, screen_id))
+        
+        db.connection.commit()
+
         cur.close()
 
     return render_template('adminutils/addScreens.html', cinemaDetails=cinema_details,)
@@ -112,6 +108,11 @@ def add_film():
 
         db.connection.commit()
         cur.close()
+        image = request.files['movie_image']
+        image_name = title + ".jpg"
+
+        image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+
     return render_template('adminutils/addFilm.html')
 
 

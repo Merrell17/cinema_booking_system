@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
+    {% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,14 +12,14 @@
     <title>Title</title>
 
 </head>
-<body>
+<body class="navigation">
     <nav>
         <div class="logo">
             <h4>Admin Utilities</h4>
         </div>
         <ul class="nav-links">
             <li>
-                <a href="{{ url_for('admin_utils.home') }}">Select Cinema</a>
+                <a href="{{ url_for('booking.home') }}">Select Cinema</a>
             </li>
             <li>
                 <a href="{{ url_for('admin_utils.add_cinema') }}">Add a Cinema</a>

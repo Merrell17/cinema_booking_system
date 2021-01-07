@@ -1,0 +1,87 @@
+
+#register {
+    height: 300px;
+    margin: 0px 25% 100px;
+    padding: 50px 50px 50px;
+    background-color: rgba(62, 19, 21,0.1);
+    height: 40vh;
+
+}
+
+#wrapper {
+    height: 300px;
+    margin: 0px 25% 100px;
+    padding: 50px 50px 50px;
+    background-color: rgba(62, 19, 21,0.1);
+    height: 40vh;
+
+}
+
+#selectheading {
+    font-family: sans-serif;
+    text-align: center;
+    color: rgb(226, 226, 226);
+
+}
+
+#selectdropdown {
+    text-align: center;
+
+}
+/*
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+    padding: 12px 20px;
+    margin-top: 50px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+*/
+/*
+body{
+    background-image: url("cinemabackground.jpg");
+    background-repeat: repeat;
+    background-size: cover;
+}
+*/
+:root {
+  --grid-cols: 1;
+  --grid-rows: 1;
+}
+
+#container {
+  background-color: pink;
+
+  display: grid;
+  grid-gap: 1em;
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+
+}
+
+.seat {
+  padding: 1em;
+  border: 1px solid #ddd;
+  text-align: center;
+  cursor: pointer;
+}
+
+.seat.selected {
+  background-color: green;
+}
+
+.booked {
+  padding: 1em;
+  border: 1px solid #ddd;
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+#book-btn {
+   display: none;
+
+}
+

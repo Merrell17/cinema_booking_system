@@ -1,10 +1,17 @@
-* {
+body.navigation  {
+    margin: 0;
+}
+
+
+nav * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
 }
 
 nav {
+
     position: fixed;
     top: 0;
     width: 100%;
@@ -12,7 +19,7 @@ nav {
     justify-content: space-around;
     align-items: center;
     min-height: 8vh;
-    background-color: #5D4954;
+    background-color: #8e262d;
     font-family: "Poppins", sans-serif;
 }
 
@@ -38,7 +45,7 @@ nav {
 .nav-links a{
     color: rgb(226, 226, 226);
     text-decoration: none;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
     font-weight: bold;
     font-size: 14px;
 }
@@ -55,13 +62,13 @@ nav {
 }
 
 @media screen and (max-width: 1024px){
-    body{
-        width: 60%;
+    body.navigation{
+
     }
 }
 
 @media screen and (max-width: 768px){
-    body{
+    body.navigation{
         overflow-x: hidden;
     }
     .nav-links{
@@ -90,6 +97,5 @@ nav {
 }
 
 body {
-    padding-top: 90px;
+    padding-top: 71px;
 }
-
