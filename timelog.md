@@ -129,5 +129,88 @@ register form data not being posted to MySQL server so Login is not possible.
 * *2 Hours* Got Dynamic URL routing working with Cinema Time page. Began creating a data stucture to feed to .html to allow for times to be shown in the correct
 order. 
 
+## 18 December 2020
+* *6 Hours* Time trying to fix a bug with registration fixed where form data wasnt being posted to the database, asked on forums but no solution. 
+## 19 December 2020
+* *2 Hours* Found error with login - had db.connect.cursor instead of db.connection.cursor in code which was causing no connection to be established so no data was given.
+* *4 Hours* Got full login logout functionality working with session variables.
+
+## 22 December 2020
+* *5 Hours* Time improving HTML, CSS and Javascript 
+## 23 December 2020
+* *6 Hours* Time improving HTML, CSS and Javascript
+
+## 27 December 2020
+* *6 Hours* Started making cinema seat select page, still struggling with understanding of Javascript and getting squares representing seats to draw correctly
+
+## 28 December 2020
+* *5 Hours* Got a rought working seat select page working which counts the number of selected tickets
+
+## 29 December 2020
+* *4 Hours* Working out how to get javascipt variable of selected seats back to python, looked in to AJAX, eventually learned I could use a HTML hidden field and append the javascript variable to it and it would be avalible in Python request.  
+
+## 30 December 2020
+* *5 Hours* 
+
+## 1 January 2020
+* *5 Hours* 
+
+## 2 January 2020
+* *5 Hours* 
+
+## 3 January 2020
+* *5 Hours* 
+
+## 4 January 2020
+* *5 Hours* 
+
+## 5 January 2020
+* *5 Hours* 
+
+## 6 January 2020
+* *5 Hours*
+
+## 7 January 2020
+* *5 Hours*
+
+## 8 January 2020
+* *5 Hours* 
+
+## 9 January 2020
+* *5 Hours* 
+
+## 10 January 2020
+* *4 Hours* 
+
+## 11 January 2020
+* *4 Hours*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
