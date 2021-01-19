@@ -136,58 +136,77 @@ order.
 * *4 Hours* Got full login logout functionality working with session variables.
 
 ## 22 December 2020
-* *5 Hours* Time improving HTML, CSS and Javascript 
+* *5 Hours* Working on cinema screening page structure. Also tried to get a convinient data structure to give to my HTML template to allow for screenings to show in correct order but SQL understanding wasn't good enough.
 ## 23 December 2020
-* *6 Hours* Time improving HTML, CSS and Javascript
+* *6 Hours* Went through a full MyMQL crash course and worked on queries
+
+## 24 December 2020
+* *5 Hours* Got a query working that gave the correct data to get the cinema screening page working 
 
 ## 27 December 2020
-* *6 Hours* Started making cinema seat select page, still struggling with understanding of Javascript and getting squares representing seats to draw correctly
+* *6 Hours* Polished screening page,
 
 ## 28 December 2020
-* *5 Hours* Got a rought working seat select page working which counts the number of selected tickets
+* *5 Hours* Got a rough working seat select page working which counts the number of selected tickets
 
 ## 29 December 2020
 * *4 Hours* Working out how to get javascipt variable of selected seats back to python, looked in to AJAX, eventually learned I could use a HTML hidden field and append the javascript variable to it and it would be avalible in Python request.  
 
 ## 30 December 2020
+* *5 Hours* Polishing seat select page and fixed bug with user cookies
+
+
+## 3 January 2021
 * *5 Hours* 
 
-## 1 January 2020
+## 4 January 2021
 * *5 Hours* 
 
-## 2 January 2020
+## 5 January 2021
 * *5 Hours* 
 
-## 3 January 2020
-* *5 Hours* 
+## 6 January 2021
+* *6 Hours* Time improving HTML, CSS and Javascript
 
-## 4 January 2020
-* *5 Hours* 
+## 7 January 2021
+* *6 Hours* Time improving HTML, CSS and Javascript
 
-## 5 January 2020
-* *5 Hours* 
+## 8 January 2021
+* *5 Hours* * *6 Hours* Started making cinema seat select page, still struggling with understanding of Javascript and getting squares representing seats to draw correctly
 
-## 6 January 2020
-* *5 Hours*
+## 9 January 2021
+* *5 Hours* Got a rough working seat select page working which counts the number of selected tickets
 
-## 7 January 2020
-* *5 Hours*
-
-## 8 January 2020
-* *5 Hours* 
-
-## 9 January 2020
-* *5 Hours* 
-
-## 10 January 2020
-* *4 Hours* 
-
-## 11 January 2020
-* *4 Hours*
+## 10 January 2021
+* *4 Hours* Working out how to get javascipt variable of selected seats back to python, looked in to AJAX, eventually learned I could use a HTML hidden field and append the javascript variable to it and it would be avalible in Python request. 
 
 
+## 11 January 2021
+* *4 Hours* Created and styled payment screen
 
+## 11 January 2021
+* *4 Hours* Created and styled booking succesful screen 
 
+## 15 January 2021
+* *3 Hours* Added ability to reset details 
+
+## 16 January 2021
+* *3 Hours* Added ability to reset password. Also looked in web scraping + beatiful soup library for film details so admins can add films easily. Found IMDbPY library and looked in to using it.
+* *1 Hours* Created make deletions page for admin but issues with logisitcs of deleting data e.g user viewing their old bookings. Adding a boolean 'active' field 
+might be better solution.
+
+## 17 January 2021
+* *3 Hours* Made movie images clickable with page giving details about the film. Added ability to see screenings at various cinemas on this page too.
+* *3 Hours* Started looking in to dissertation writing, watched recommended Simon Peyton Jones lecture on writing paper and started writing process. 
+
+## 18 January 2021
+* *3 Hours* Added ability to add films by just giving IMBd id, admins no longer have to find and input film info themselves
+* *2 Hours* Bug fixing errors on IMBd images not appearing, not all films have usuable images (non existant or poor quality). 
+admins will have to select their own even with an IMBd ID.
+* *1 Hours* Found another bug where reservation is being created before confirming payment, couldn't find why and currently unfixed.
+
+## 19 January 2021
+* *1 Hours* Fixed SQL error when adding film with mutiple directors
 
 
 
