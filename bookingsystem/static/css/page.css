@@ -9,11 +9,11 @@
 }
 
 #wrapper {
-    height: 300px;
+
     margin: 0px 25% 100px;
-    padding: 50px 50px 50px;
+    padding: 50px 20px 50px;
     background-color: rgba(62, 19, 21,0.1);
-    height: 40vh;
+    height: 10vh;
 
 }
 
@@ -46,14 +46,14 @@ body{
     background-repeat: repeat;
     background-size: cover;
 }
-*/
+
 :root {
   --grid-cols: 1;
   --grid-rows: 1;
 }
-
+*/
 #container {
-  background-color: pink;
+
 
   display: grid;
   grid-gap: 1em;
@@ -82,6 +82,16 @@ body{
 
 #book-btn {
    display: none;
+}
+
+label {
+    width: 240px;
+    display: inline-block;
+    text-align: right;
+}
+
+img {
+   padding-top: 10px;
 
 }
 

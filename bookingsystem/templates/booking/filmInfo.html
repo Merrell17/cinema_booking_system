@@ -1,25 +1,30 @@
 {% extends 'base.html' %}
-
 {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   <title>Select Cinema</title>
+   <title>Finalise Booking</title>
    {% endblock %}
 
-{% block body %}
-<body>
 
-    <h1>{{ cinemaName }}</h1>
-    <br>
-    <h3>Listings:</h3>
+{% block body %}
+<h1>{{ title }}</h1>
+     <img src="http://127.0.0.1:5000/static/imgs/{{ title }}.jpg" alt="..."  style="width: 200px;height:300px;">
+
+    <span><h5>Director:</h5><h6>{{ details[2] }}</h6></span>
+    <h5>Description: </h5><p>{{ details[3] }}</p>
+    <h5>Duration: {{ details[4] }} Minutes</h5>
+
+
+     <h3 style="padding-top: 20px;">Showing At:</h3>
 
     {%for a,b in filmTimes%}
         <div style="background: lightgrey">
         <h1>{{a}}</h1>
-        <img src="http://127.0.0.1:5000/static/imgs/{{ a }}.jpg" alt="..."  style="width: 200px;height:300px;">
+
 
         {%for each, id in b %}
             <ul>
@@ -29,11 +34,8 @@
             </ul>
              {%endfor%}
         </div>
-        <br>
+      <br>
     {%endfor%}
 
-
-
-</body>
-</html>
 {% endblock %}
+

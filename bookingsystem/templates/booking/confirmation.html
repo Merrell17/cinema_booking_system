@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <title>Select Cinema</title>
+   {% endblock %}
+{% block body %}
+<body>
+<div>
+<h1 style="color:#71ce73;">Booking Confirmed</h1>
+
+<table style="width:100%" id="main_info">
+
+<tr>
+<td class="left">Name</td>
+<td class="right">{{fname}} {{ lname }}</td>
+</tr>
+<tr>
+<td class="left" >Film</td>
+<td class="right">{{ title }}</td>
+</tr>
+<tr>
+<td class="left">Cinema</td>
+<td class="right">{{ session['cinema_name'] }}</td>
+</tr>
+
+</table>
+
+<table style="width:100%" id="timings">
+<tr>
+<td class="left">Date</td>
+<td class="right">{{ date }}</td>
+</tr>
+<tr>
+<td class="left">Time</td>
+<td class="right">{{ time }}</td>
+</tr>
+
+</table>
+
+
+<table style="width:100%" id="pricing">
+
+<tr>
+<td class="left">Reservation Number</td>
+<td class="right">{{ reservation }}</td>
+</tr>
+<tr>
+{% if seats %}
+<td class="left">Your Seat(s)</td>
+<td class="right">Seat {{ seats[0] }} </td>
+    {% for i in range(1,(seats|length)) %}
+        <tr>
+        <td class="left"></td>
+        <td class="right">Seat {{ seats[i] }} </td>
+        </tr>
+
+    {% endfor %}
+{% endif %}
+{% if seat_count %}
+<td class="left">Number of Seats</td>
+<td class="right">{{ seat_count }} </td>
+{% endif %}
+</tr>
+
+
+</table>
+</div>
+
+
+
+
+</body>
+{%  endblock %}
+</html>

@@ -9,7 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
-    <title>Register</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Select Seats</title>
+
 
     {% endblock %}
 </head>
@@ -25,7 +27,8 @@
  Select your seats!
  </p>
 
-    <form method="POST" action="{{ url_for('booking.process_ticket')}}">
+    <form method="POST" action="{{ url_for('booking.process_ticket',
+                                auditorium = auditorium ,screening = screeningId) }}">
     <input type="hidden" id="hidden" name="hidden-ticket-value">
 
     <input type="submit" value="Book" id="book-btn">
@@ -39,7 +42,7 @@
 const container = document.getElementById("container");
 
 
-var bookedSeats = [5,14,16]
+var bookedSeats = {{ reserved_numbers|tojson }}
 
 function makeRows(rows, cols) {
   container.style.setProperty('--grid-rows', rows);
@@ -79,7 +82,7 @@ $('.seat').click((e) => {
 
 for(var i in bookedSeats){
 	booked = (document.getElementById("seat" + bookedSeats[i]));
-  booked.className = "seat booked"
+    booked.className = "seat booked"
 }
 
 

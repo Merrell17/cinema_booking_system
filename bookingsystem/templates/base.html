@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
     <title>Title</title>
 
 </head>
@@ -19,6 +20,14 @@
             <h4>Cinema Booking System</h4>
         </div>
         <ul class="nav-links">
+
+            {% if g.admin==True %}
+
+            <li>
+                <a href="{{ url_for('admin_utils.add_cinema') }}">Tools</a>
+            </li>
+            {% endif %}
+
             {% if session['cinema_name'] and session['cinema_url'] %}
             <li>
                 <a href="{{ url_for('booking.cinema_times', name=session['cinema_url']) }}">{{ session['cinema_name'] }}</a>
@@ -30,7 +39,7 @@
 
             {% if g.user %}
             <li>
-                <a href='#'>{{ g.user[1] }}</a>
+                <a href='{{ url_for('booking.my_account') }}'>{{ g.user[1] }}</a>
             </li>
             <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
             {% else %}

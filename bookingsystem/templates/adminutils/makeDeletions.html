@@ -1,0 +1,76 @@
+{% extends 'adminBase.html' %}
+<head>
+    {%  block head %}
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% endblock %}
+</head>
+
+
+
+{% block body %}
+
+    <div class="wrapper">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <span>{{ message }}</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        </div>
+
+    <div id="wrapper">
+
+
+    <h1 id="selectheading">Make Deletions<br></h1>
+
+
+    <div id="selectdropdown">
+    <form method="POST" action="" name="delete_cinema">
+        <select name="cinemas" id="cinemas">
+        <option value="" selected disabled hidden>Delete a Cinema</option>
+        {% for cinema in cinemaDetails %}
+        <option value="{{ cinema[0] }}">{{cinema[2]}}</option>
+        {% endfor %}
+        </select>
+        <br>
+        <input type="submit">
+    </form>
+
+    <form method="POST" action="">
+
+        <select name="movies" id="movies">
+        <option value="" selected disabled hidden>Delete a Movie</option>
+        {% for movie in movies %}
+        <option value="{{ movie[0] }}">{{movie[1]}}</option>
+        {% endfor %}
+        </select>
+        <br>
+        <input type="submit">
+    </form>
+
+    <form method="POST" action="">
+
+        <select name="auditoriums" id="auditoriums">
+        <option value="" selected disabled hidden>Delete an Auditorium</option>
+        {% for auditorium in auditoriums %}
+        <option value="{{ auditorium[0] }}">{{auditorium[2]}} - Screen {{auditorium[1]}}</option>
+        {% endfor %}
+        </select>
+        <br>
+        <input type="submit">
+    </form>
+
+    </div>
+
+
+{% endblock %}

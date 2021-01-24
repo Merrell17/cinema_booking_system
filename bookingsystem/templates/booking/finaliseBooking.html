@@ -1,22 +1,104 @@
 {% extends 'base.html' %}
-<head>
+{% block head %}
     <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <title>Finalise Booking</title>
+   {% endblock %}
 
 
 {% block body %}
 <body>
-<form method="post" autocomplete="off", id="login">
-    <label for="card_number">Card Number</label>
-    <input name="card_number" id="card_number" required>
-    <br>
-    <label for="expiration">Password</label>
-    <input type="expiration" name="expiration" id="expiration" required>
-    <br>
-    <input type="submit" value="Log In">
-  </form>
+<div>
+<h1 style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">Confirm Booking</h1>
+
+<table style="width:100%" id="main_info">
+
+<tr>
+<td class="left">Name</td>
+<td class="right">Hugh Merrell</td>
+</tr>
+<tr>
+<td class="left" >Film</td>
+<td class="right">{{ film_title }}</td>
+</tr>
+<tr>
+<td class="left">Cinema</td>
+<td class="right">{{ session['cinema_name'] }}</td>
+</tr>
+
+</table>
+
+<table style="width:100%" id="timings">
+<tr>
+<td class="left">Date</td>
+<td class="right">{{ date }}</td>
+</tr>
+<tr>
+<td class="left">Time</td>
+<td class="right">{{ time }}</td>
+</tr>
+
+</table>
+
+
+<table style="width:100%" id="pricing">
+<tr>
+<td class="left">Ticket Price</td>
+<td class="right">£9.60</td>
+</tr>
+<tr>
+<td class="left">Ticket Quantity</td>
+<td class="right">{{ seats|length }}</td>
+</tr>
+<tr>
+<td id="total">Total</td>
+<td id="total_value">£{{ total }}</td>
+</tr>
+</table>
+</div>
+
+<div id="payment form">
+<form method="POST" class="signup" autocomplete="off" action="{{ url_for('booking.confirmed', user=session['user_id'],
+                                       reservation=reservation) }}">
+    <div class="signup__field">
+    <input class="signup__input" type="text" name="card_number" id="card_number" required />
+    <label class="signup__label" for="card_number">Card Number</label>
+  </div>
+
+  <div class="signup__field">
+    <input class="signup__input" type="text" name="card_name" id="card_name" required />
+    <label class="signup__label" for="card_name">Name on Card</label>
+  </div>
+
+
+    <div class="signup__field">
+    <input class="signup__input" type="text" name="fname" id="fname" required />
+    <label class="signup__label" for="fname">MM/YY</label>
+  </div>
+    <div class="signup__field">
+    <input class="signup__input" type="text" name="lname" id="lname" required />
+    <label class="signup__label" for="lname">CVC</label>
+  </div>
+
+  <button type="submit">Book Tickets</button>
+</form>
+</div>
+<!--
+<div id="booking_summary">
+    <h1>Confirm Booking</h1>
+    <ul>
+    #{% for seat in seats%}
+        seat {{ seat }}
+    </ul>
+    #{% endfor %}
+</div>
+-->
+
+
 
 </body>
 {% endblock %}

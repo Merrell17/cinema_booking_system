@@ -41,15 +41,16 @@ def register():
         if error is None:
 
             cur.execute(
-                "INSERT INTO user(username, password, email, first_name, last_name)"
-                "VALUES (%s, %s, %s, %s, %s)",
-                (username, generate_password_hash(password), email, fname, lname))
+                "INSERT INTO user(username, password, email, first_name, last_name, is_admin)"
+                "VALUES (%s, %s, %s, %s, %s, %s)",
+                (username, generate_password_hash(password), email, fname, lname, 0))
             db.connection.commit()
 
-
             cur.close()
+            flash('Account created!')
             return redirect(url_for('auth.login'))
-        db.connection.commit()
+
+        db.connection.commit()  #tab in?
         flash(error)
 
     return render_template('auth/register.html')
@@ -91,6 +92,9 @@ def load_logged_in_user():
             'SELECT * FROM user WHERE id = (%s)', (user_id,)
         )
         g.user = cur.fetchone()
+        # Store whether use is admin
+        is_admin = g.user[6]
+        g.admin = bool(is_admin)
 
 
 @bp_auth.route('/logout')
@@ -104,6 +108,26 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+def admin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            flash('Login as an admin to access this page')
+            return redirect(url_for('auth.login'))
+
+        cur = db.connection.cursor()
+        cur.execute('SELECT is_admin FROM user WHERE id = (%s)', (session['user_id'],))
+        is_admin = cur.fetchone()[0]
+
+        if not is_admin:
+            flash("Login as an administrator to access this page")
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)

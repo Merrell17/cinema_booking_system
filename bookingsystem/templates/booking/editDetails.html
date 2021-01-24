@@ -32,33 +32,30 @@
 {% endwith %}
 
 <form method="POST" class="signup" autocomplete="off">
-  <h1>Create account</h1>
-  <h2>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></h2>
+  <h1>Edit Details</h1>
+
 
   <div class="signup__field">
-    <input class="signup__input" type="text" name="username" id="username" required />
+    <input class="signup__input" type="text" name="username" id="username" value="{{ username }}" required />
     <label class="signup__label" for="username">Username</label>
   </div>
 
   <div class="signup__field">
-    <input class="signup__input" type="text" name="email" id="email" required />
+    <input class="signup__input" type="text" name="email" id="email" value="{{ email }}" required />
     <label class="signup__label" for="email">Email</label>
   </div>
 
-  <div class="signup__field">
-    <input class="signup__input" type="password" name="password" id="password" required />
-    <label class="signup__label" for="password">Password</label>
-  </div>
+
     <div class="signup__field">
-    <input class="signup__input" type="text" name="fname" id="fname" required />
+    <input class="signup__input" type="text" name="fname" id="fname" value={{ fname }} required />
     <label class="signup__label" for="fname">First Name</label>
   </div>
     <div class="signup__field">
-    <input class="signup__input" type="text" name="lname" id="lname" required />
+    <input class="signup__input" type="text" name="lname" id="lname" required value="{{ lname }}" />
     <label class="signup__label" for="lname">Last Name</label>
   </div>
 
-  <button type="submit">Sign up</button>
+  <button type="submit">Make Changes</button>
 </form>
     </div>
 </body>

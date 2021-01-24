@@ -22,5 +22,5 @@ def create_app():
     app.register_blueprint(auth.bp_auth)
     app.register_blueprint(admin_utils.bp_admin)
     app.register_blueprint(booking.bp_booking)
-
+    app.debug = True
     return app

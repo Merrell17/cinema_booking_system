@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
-    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <title>Select Cinema</title>
    {% endblock %}
 
 {% block body %}
@@ -30,6 +31,17 @@
     </form>
     </div>
     </div>
+
+<div class="container" style="margin:auto; max-width: 950px">
+    <h1>What's On?</h1>
+    {% for title in film_titles %}
+        <a href="{{ url_for('booking.film_info', film=title[0], film_id=title[1])}}">
+         <img src="../static/imgs/{{ title[0] }}.jpg" alt="..."  style="width: 200px;height:300px;">
+        </a>
+    {% endfor %}
+
+
+</div>
 
 </body>
 {% endblock %}

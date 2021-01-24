@@ -1,4 +1,17 @@
 {% extends 'adminBase.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Select Seats</title>
+    {% endblock %}
+</head>
 
 <head>
     <meta charset="UTF-8">
@@ -8,9 +21,32 @@
 
 {% block body %}
 
+    <div class="wrapper">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <span>{{ message }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+
 <p class="formfield">
 <h1>Add a Film</h1>
     <form method="POST" action="" enctype="multipart/form-data">
+        Image <input type="file" name="movie_image" accept="image/*" required/>
+        <br>
+
+        <h5>Use IMDb</h5>
+        IMDb ID <input type="text" name="imdb_id" />
+
+        <h5>Or Enter Manually</h5>
         Title <input type="text" name="title" />
         <br>
         Director <input type="text" name="director" />
@@ -19,8 +55,7 @@
         <br>
         Duration (minutes) <input type="text" name="duration" />
         <br>
-        Image <input type="file" name="movie_image" accept="image/*"/>
-        <br>
+
         <input type="submit">
     </form>
 </p>
