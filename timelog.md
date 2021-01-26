@@ -208,7 +208,20 @@ admins will have to select their own even with an IMBd ID.
 ## 19 January 2021
 * *1 Hours* Fixed SQL error when adding film with mutiple directors
 
+## 22 January 2021
+* *2 Hours* Decided on best way to store reservation data which was deleted by admin and adjusted ER diagram to represent changes
+* *3 Hours* Attempted to implement delete section of backend but query to delete related data but wasn't working nor were suggested fixes. Adjusted database to use ON CASCADE DELETE which made it far simpler. 
 
+
+## 23 January 2021
+* *1 Hours* Implemented front end page for admin deletions and got it working with the backend so deletions were possible
+* *3 Hours* Editted MyAccount page to pull data from new table where deleted. Editted booking confirmation page to work with new data.
+
+## 24 January 2021
+* *6 Hours* Added styling to admin section and created testing directory. Bug in testing not working with imports, fixed by making __init__.py in testing directory. 
+
+## 15 January 2021
+* *2 Hours* Added things from prep doc to dissertation.
 
 
 
