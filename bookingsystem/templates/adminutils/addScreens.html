@@ -7,36 +7,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">-->
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Select Seats</title>
     {% endblock %}
 </head>
-
-
 {% block body %}
-<h1>Add a Screen</h1>
+    <div class="wrapper">
+        {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-
-<form method="POST" action="">
+<form method="POST" class="signup" autocomplete="off">
+  <h1>Add Screen</h1>
     <label for="cinemas">Choose a cinema</label>
-
-    <select name="cinemas" id="cinemas">
+    <select name="cinemas" id="cinemas" >
         {% for cinema in cinemaDetails %}
         <option value="{{ cinema[0] }}">{{cinema[2]}}</option>
         {% endfor %}
     </select>
-    <br>
 
-        Screen Number <input type="text" name="name" />
-        <br>
+  <div class="signup__field" style="margin-top: 30px;">
+    <input class="signup__input" type="text" name="name" id="username" value="" required />
+    <label class="signup__label" for="name">Screen Name</label>
+  </div>
 
-        Number of Rows <input type="text" name="row_count" />
-        <br>
-        Number of Columns <input type="text" name="column_count" />
-        <br>
+  <div class="signup__field">
+    <input class="signup__input" type="text" name="row_count" id="username" value="" required />
+    <label class="signup__label" for="row_count">Row Count</label>
+  </div>
 
-        <input type="submit">
-    </form>
+    <div class="signup__field">
+    <input class="signup__input" type="text" name="column_count" id="username" required value="" />
+    <label class="signup__label" for="column_count">Column Count</label>
+  </div>
 
+  <button type="submit">Add Screen</button>
+</form>
+    </div>
+</body>
+</html>
 {% endblock %}
+
+

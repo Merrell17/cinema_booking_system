@@ -10,7 +10,7 @@ from bookingsystem.auth import admin_required
 
 bp_admin = Blueprint('admin_utils', __name__, url_prefix='/adminutils', template_folder='templates/adminutils')
 
-address_cinema_id = 25
+address_cinema_id = 55
 
 # Add Cinema to database
 @bp_admin.route('addcinema', methods=['GET', 'POST'])

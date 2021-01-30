@@ -1,6 +1,4 @@
 {% extends 'adminBase.html' %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}"-->
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Select Seats</title>
     {% endblock %}
@@ -17,21 +15,50 @@
 {% block body %}
     <div class="wrapper">
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <span>{{ message }}</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form method="POST" class="signup" autocomplete="off" style="margin-bottom: 150px;">
+  <h1>Create Screening</h1>
+     <label for="screen">Choose a Screen</label>
+    <select name="screen" id="screen">
+        {% for row in auditoriumDetails %}
+        <option value="{{ row[0] }}">{{row[1]}} - Screen {{row[2]}}</option>
+        {% endfor %}
+    </select>
+
+    <label for="films" style="margin-top: 10px;">Choose a Film</label>
+    <select name="films" id="films">
+        {% for film in filmDetails %}
+        <option value="{{ film[0] }}">{{film[1]}}</option>
+        {% endfor %}
+    </select>
+
+    <label for="film_time" style="margin-top: 10px;">Screening Time</label>
+    <input type="datetime-local" name="film_time" />
+
+
+    <button type="submit" style="margin-top: 30px;">Add Screen</button>
+</form>
     </div>
+</body>
+</html>
+{% endblock %}
 
 
 
+
+
+    <!--
 <h1>Create a Screening</h1>
 <form method="POST" action="">
 
@@ -52,9 +79,9 @@
     <br>
     Start Time<input type="datetime-local" name="film_time" />
     <br>
-
-
     <input type="submit">
     </form>
 
-{% endblock %}}
+
+
+-->

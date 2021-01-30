@@ -1,4 +1,5 @@
 {% extends 'adminBase.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,36 +8,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Select Seats</title>
     {% endblock %}
 </head>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Add a Film</title>
-
-</head>
-
 {% block body %}
 
-    <div class="wrapper">
+<body>
+<div class="wrapper">
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <span>{{ message }}</span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+
+    <form method="POST" action="" enctype="multipart/form-data">
+        <h1>Add a Film</h1>
+        Image <input type="file" name="movie_image" accept="image/*" required/>
+        <br>
+
+    <h3>Use IMDb ID </h3>
+        <div class="signup__field">
+    <input class="signup__input" type="text" name="imdb_id" id="username" required />
+    <label class="signup__label" for="imdb_id">IMDb ID</label>
+  </div>
+        <h1 >OR</h1>
+
+
+    <h3>Enter Manually</h3>
+  <div class="signup__field">
+    <input class="signup__input" type="text" name="title" id="username" required />
+    <label class="signup__label" for="title">Film Title</label>
+  </div>
+
+        <div class="signup__field">
+    <input class="signup__input" type="text" name="director" id="username" required />
+    <label class="signup__label" for="director">Director</label>
+  </div>
+
+        <div class="signup__field">
+    <input class="signup__input" type="text" name="description" id="username" required />
+    <label class="signup__label" for="description">Description</label>
+  </div>
+
+          <div class="signup__field">
+    <input class="signup__input" type="text" name="duration" id="username" required />
+    <label class="signup__label" for="duration">Duration</label>
+  </div>
+        <button type="submit">Add Cinema</button>
+</form>
     </div>
+</body>
+</html>
 
 
+{% endblock %}
+
+<!--
 <p class="formfield">
 <h1>Add a Film</h1>
     <form method="POST" action="" enctype="multipart/form-data">
@@ -55,10 +95,7 @@
         <br>
         Duration (minutes) <input type="text" name="duration" />
         <br>
-
         <input type="submit">
     </form>
-</p>
+</p>-->
 
-{% endblock %}
-</html>
