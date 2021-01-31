@@ -108,17 +108,11 @@ def add_screen():
 
     return render_template('adminutils/addScreens.html', cinemaDetails=cinema_details,)
 
-
+# Check for imdb being used twice
 @bp_admin.route('addfilm', methods=['GET', 'POST'])
 @admin_required
 def add_film():
     if request.method == "POST":
-        # ia = imdb.IMDb()
-        # a = ia.get_movie("0325980")
-        # a['runtimes']
-        # a['plot outline']
-        #for director in a['directors']:
-            #print(director['name'])
 
         cur = db.connection.cursor()
         imbd_id = request.form['imdb_id']
@@ -200,11 +194,40 @@ def create_screening():
         film_id = screening_details['films']
         start_time = screening_details['film_time']
 
-        cur.execute("INSERT INTO screening(movie_id, auditorium_id, screening_start) "
-                    "VALUES(%s, %s, %s)", (film_id, screen_id, start_time))
-        db.connection.commit()
-        cur.close()
-        flash('Screening created!')
+        if start_time == '':
+            flash("Enter a valid start time")
+            return redirect(url_for('admin_utils.create_screening'))
+
+
+
+        cur.execute("""SELECT duration_min FROM movie WHERE id=(%s)""", (film_id,))
+        duration = cur.fetchone()[0]
+
+
+        # Make start time a datetime object and add film duration minutes to get end time
+
+        start = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M")
+        end_time = start + datetime.timedelta(minutes=duration)
+        end_time = end_time.strftime("%Y-%m-%dT%H:%M")
+
+
+        # Check that there's no timing clashes before insertion
+        cur.execute("""SELECT M.title, S.screening_start, S.end_time
+                        FROM movie M JOIN screening S ON M.id = S.movie_id
+                        WHERE S.auditorium_id=(%s) 
+                        AND (%s) > S.screening_start AND (%s) < S.end_time """, (screen_id, end_time, start_time))
+
+        clash = cur.fetchone()
+        if cur.fetchone() is not None:
+            flash('Clashing error: ' + str(clash[0]) + ' is showing on this screen between \n' + clash[1].strftime('%H:%M') + ' and '
+                  + clash[2].strftime('%H:%M'))
+
+        else:
+            cur.execute("INSERT INTO screening(movie_id, auditorium_id, screening_start, end_time) "
+                    "VALUES(%s, %s, %s, %s)", (film_id, screen_id, start_time, end_time))
+            db.connection.commit()
+            cur.close()
+            flash('Screening created!')
 
     return render_template('createScreening.html', filmDetails=film_details,
                            auditoriumDetails=auditorium_details)
