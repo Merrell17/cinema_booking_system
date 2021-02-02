@@ -220,12 +220,21 @@ admins will have to select their own even with an IMBd ID.
 ## 24 January 2021
 * *6 Hours* Added styling to admin section and created testing directory. Bug in testing not working with imports, fixed by making __init__.py in testing directory. 
 
-## 15 January 2021
+## 25 January 2021
 * *2 Hours* Added things from prep doc to dissertation.
 
 
+## 29 January 2021
+* *3 Hours* Polished some frontend + backend code in admin section. Fixed bug hitting submit without having selected cinema. Fixed bug caused by entering IMDb id and film details.
+* *1 Hours* Changed cinema id to auto increment in MySQL. Issue with foreign key cinema address and address table whilst inserting cinemas but is fixed.
 
 
+## 30 January 2021
+* *1 Hours* Tried to get clash checking working without needing to store endtime in database but was unfeasable. 
+* *3 Hours* Got endtime calculated and stored in database on inserting films. Spent a long time trying to use MySQL's ADD_TIME() function with film duration. Eventually resorted to pulling SQL start_time timestamp, coverting it to python datetime object, adding film duration minutes, coverting back and storing results.    
+
+## 1 January 2021
+* *5 hours* Went through offical Flask tutorials testing section. Fixed bug causing tests not run and completed tests for authentication, Flask app and Admin Section. Revealed bad implementation - using HTML required tag on forms doesn't stop data being posted with HTTP, need to add more checking on user input.    
 
 
 
