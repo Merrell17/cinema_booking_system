@@ -225,9 +225,8 @@ admins will have to select their own even with an IMBd ID.
 
 
 ## 29 January 2021
-* *3 Hours* Polished some frontend + backend code in admin section. Fixed bug hitting submit without having selected cinema. Fixed bug caused by entering IMDb id and film details.
-* *1 Hours* Changed cinema id to auto increment in MySQL. Issue with foreign key cinema address and address table whilst inserting cinemas but is fixed.
-
+* *2 Hours* Polished some frontend + backend code in admin section. Fixed bad key error on hitting submit without having selected cinema. Fixed bug caused by bad logic in function when entering IMDb id and film details.
+* *1 Hours* Changed cinema id to auto increment in MySQL. Issue with foreign key address_id and address table whilst inserting cinemas but is fixed.
 
 ## 30 January 2021
 * *1 Hours* Tried to get clash checking working without needing to store endtime in database but was unfeasable. 
