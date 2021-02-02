@@ -1,3 +1,4 @@
+import werkzeug
 from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app
 from bookingsystem.extensions import db
 import json
@@ -21,7 +22,10 @@ def home():
     film_titles = cur.fetchall()
 
     if request.method == "POST":
-        cinema_id = request.form['cinemas']
+        try:
+            cinema_id = request.form['cinemas']
+        except werkzeug.exceptions.BadRequestKeyError:
+            return redirect(url_for('booking.home'))
         cur.execute("SELECT name FROM cinema WHERE id=(%s)", (cinema_id,))
         results = list(cur)[0][0]
         session['cinema_name'] = results

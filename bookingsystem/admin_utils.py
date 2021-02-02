@@ -25,7 +25,7 @@ def add_cinema():
         city = address_details['city']
         county = address_details['county']
         postcode = address_details['postcode']
-        global address_cinema_id
+        #global address_cinema_id
         cur = db.connection.cursor()
 
         # Check for errors
@@ -39,15 +39,17 @@ def add_cinema():
 
         # Insert Cinema into database
         if error is None:
-            cur.execute("INSERT INTO address(id,address1, address2, city, county, postcode) "
-                        "VALUES(%s,%s, %s, %s, %s, %s)", (address_cinema_id, address1, address2, city, county, postcode))
+            cur.execute("INSERT INTO address(address1, address2, city, county, postcode) "
+                        "VALUES(%s, %s, %s, %s, %s)", (address1, address2, city, county, postcode))
+            cur.execute("SELECT MAX(id) FROM address")
+            adr_id = cur.fetchone()[0]
 
-            cur.execute("INSERT INTO cinema(id,address_id,name) "
-                        "VALUES(%s, %s, %s)", (address_cinema_id, address_cinema_id, cinema_name))
+            cur.execute("""INSERT INTO cinema(name, address_id)
+                        VALUES(%s, %s)""", (cinema_name, adr_id,))
 
             db.connection.commit()
             cur.close()
-            address_cinema_id += 1
+
             flash("Success")
         else:
             flash(error)
@@ -78,9 +80,9 @@ def add_screen():
             error = 'screen name is required.'
         elif not cinema_name:
             error = 'cinema_name is required'
-        elif not column_count or int(column_count) < 1:
+        elif not column_count or not column_count.isdigit():
             error = 'Invalid number of columns'
-        elif not row_count or int(row_count) < 1:
+        elif not row_count or not column_count.isdigit():
             error = 'Invalid number of rows'
 
         cur.execute("""SELECT screen_name 
@@ -109,17 +111,17 @@ def add_screen():
     return render_template('adminutils/addScreens.html', cinemaDetails=cinema_details,)
 
 # Check for imdb being used twice
+# Try catch for images, split Imdb into func
 @bp_admin.route('addfilm', methods=['GET', 'POST'])
 @admin_required
 def add_film():
     if request.method == "POST":
-
         cur = db.connection.cursor()
+
+
         imbd_id = request.form['imdb_id']
         imbd_film = None
         error = None
-
-
         if imbd_id != '':
             ia = imdb.IMDb()
 
@@ -129,7 +131,7 @@ def add_film():
                 directors = []
                 for dir in imbd_film['directors']:
                     directors.append(str(dir['name']))
-                duration = imbd_film['runtimes']
+                duration = imbd_film['runtimes'][0]
                 description = imbd_film['plot outline']
                 director = ' '.join(directors)
             except imdb._exceptions.IMDbParserError:
@@ -143,12 +145,12 @@ def add_film():
             description = film_details['description']
             duration = film_details['duration']
 
-        if not imbd_film:
+        if imbd_id != '' and not imbd_film:
             error = 'Invalid IMDb ID, enter details manually or try again'
         elif not title:
-            error = 'title is required.'
-        elif not duration:
-            error = 'duration is required'
+            error = 'Valid title is required.'
+        elif not duration or not duration.isdigit():
+            error = 'Valid duration is required'
 
         cur.execute('SELECT title FROM movie WHERE title = (%s)', (title,))
         if cur.fetchone() is not None:
@@ -161,10 +163,14 @@ def add_film():
 
             db.connection.commit()
             cur.close()
-            image = request.files['movie_image']
-            image_name = title + ".jpg"
 
-            image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+            # Testing purposes
+            try:
+                image = request.files['movie_image']
+                image_name = title + ".jpg"
+                image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+            except:
+                pass
             flash('Successfully added film ' + title)
         else:
             flash(error)
@@ -304,8 +310,6 @@ def deletions():
 
 
         return redirect(url_for('admin_utils.deletions'))
-
-
 
     return render_template('adminutils/makeDeletions.html', cinemaDetails=cinema_details,
                            movies=movies, auditoriums=auditoriums)
