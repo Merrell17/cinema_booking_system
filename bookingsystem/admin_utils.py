@@ -105,8 +105,8 @@ def add_screen():
         
             db.connection.commit()
             cur.close()
-
-        flash(error)
+        else:
+            flash(error)
 
     return render_template('adminutils/addScreens.html', cinemaDetails=cinema_details,)
 
@@ -193,24 +193,24 @@ def create_screening():
     auditorium_details = cur.fetchall()
 
     if request.method == "POST":
+        # Get screening details
         cur = db.connection.cursor()
         screening_details = request.form
         screen_id = screening_details['screen']
         film_id = screening_details['films']
         start_time = screening_details['film_time']
-
+        # Check start time has been entered
         if start_time == '':
             flash("Enter a valid start time")
             return redirect(url_for('admin_utils.create_screening'))
 
 
-
+        # Get selected film's duration
         cur.execute("""SELECT duration_min FROM movie WHERE id=(%s)""", (film_id,))
         duration = cur.fetchone()[0]
 
 
         # Make start time a datetime object and add film duration minutes to get end time
-
         start = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M")
         end_time = start + datetime.timedelta(minutes=duration)
         end_time = end_time.strftime("%Y-%m-%dT%H:%M")
@@ -223,7 +223,7 @@ def create_screening():
                         AND (%s) > S.screening_start AND (%s) < S.end_time """, (screen_id, end_time, start_time))
 
         clash = cur.fetchone()
-        if cur.fetchone() is not None:
+        if clash is not None:
             flash('Clashing error: ' + str(clash[0]) + ' is showing on this screen between \n' + clash[1].strftime('%H:%M') + ' and '
                   + clash[2].strftime('%H:%M'))
 

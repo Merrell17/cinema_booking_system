@@ -62,8 +62,7 @@
 </div>
 
 <div id="payment form">
-<form method="POST" class="signup" autocomplete="off" action="{{ url_for('booking.confirmed', user=session['user_id'],
-                                       reservation=reservation) }}">
+<form method="POST" class="signup" autocomplete="off" action="">
     <div class="signup__field">
     <input class="signup__input" type="text" name="card_number" id="card_number" required />
     <label class="signup__label" for="card_number">Card Number</label>
@@ -76,8 +75,8 @@
 
 
     <div class="signup__field">
-    <input class="signup__input" type="text" name="fname" id="fname" required />
-    <label class="signup__label" for="fname">MM/YY</label>
+    <input class="signup__input" type="text" name="expiration" id="expiration" required />
+    <label class="signup__label" for="expiration">MM/YY</label>
   </div>
     <div class="signup__field">
     <input class="signup__input" type="text" name="lname" id="lname" required />

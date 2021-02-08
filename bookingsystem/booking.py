@@ -68,11 +68,11 @@ def film_info(film):
 def cinema_times(name):
     cur = db.connection.cursor()
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
-                FROM screening S JOIN movie M ON S.movie_id = M.id
-                JOIN auditorium A ON S.auditorium_id = A.id
-                JOIN cinema C ON A.Cinema_id = c.id
-                WHERE c.name = (%s) AND S.Screening_Start > NOW()
-                ORDER BY M.title, S.Screening_Start""", (session['cinema_name'],))
+                    FROM screening S JOIN movie M ON S.movie_id = M.id
+                    JOIN auditorium A ON S.auditorium_id = A.id
+                    JOIN cinema C ON A.Cinema_id = c.id
+                    WHERE c.name = (%s) AND S.Screening_Start > NOW()
+                    ORDER BY M.title, S.Screening_Start""", (session['cinema_name'],))
 
     film_times = cur.fetchall()
     # Create dictionary with keys being film titles and corresponding list of screening time values
@@ -165,38 +165,42 @@ def process_ticket(screening, auditorium):
     query = cur.fetchone()
     fname = query[0]
     lname = query[1]
+
     if request.method == "POST":
-        # expiration_date = request.form['expiration']
-        # card_number = request.form['card_number']
-        # card_type = request.form['card_type']
+        if 'expiration' in request.form:
+            expiration_date = request.form['expiration']
+            card_number = request.form['card_number']
 
-        expiration_date = '2021-11-11'
-        card_number = '0000343434341323'
-        card_type = 'visa'
 
-        cur.execute("INSERT INTO payment(user_id, card_number, card_type, expiration_date) "
+            expiration_date = '2021-11-11'
+            card_number = '0000343434341323'
+            card_type = 'visa'
+
+            cur.execute("INSERT INTO payment(user_id, card_number, card_type, expiration_date) "
                     "VALUES(%s, %s, %s, %s)", (session['user_id'], card_number, card_type, expiration_date))
-        db.connection.commit()
+            db.connection.commit()
 
-        cur.execute("SELECT max(id) FROM payment WHERE user_id = (%s)", (session['user_id'],))
-        payment = cur.fetchone()[0]
+            cur.execute("SELECT max(id) FROM payment WHERE user_id = (%s)", (session['user_id'],))
+            payment = cur.fetchone()[0]
 
-        cur.execute("INSERT INTO reservation(screening_id, reserved, paid, active, user_id, payment_id) "
+            cur.execute("INSERT INTO reservation(screening_id, reserved, paid, active, user_id, payment_id) "
                     "VALUES(%s, %s, %s, %s, %s, %s)",
                     (screening, True, True, True, session['user_id'], payment))
-        db.connection.commit()
-
-        cur.execute("SELECT max(id) FROM reservation WHERE user_id = (%s)", (session['user_id'],))
-        reservation = cur.fetchone()[0]
-
-        for seat in seat_id:
-            cur.execute("INSERT INTO seat_reserved(seat_id, screening_id, reservation_id) "
-                        "VALUES(%s, %s, %s)", (seat, screening, reservation))
             db.connection.commit()
-        cur.close()
+
+            cur.execute("SELECT max(id) FROM reservation WHERE user_id = (%s)", (session['user_id'],))
+            reservation = cur.fetchone()[0]
+
+            for seat in seat_id:
+                cur.execute("INSERT INTO seat_reserved(seat_id, screening_id, reservation_id) "
+                        "VALUES(%s, %s, %s)", (seat, screening, reservation))
+                db.connection.commit()
+            cur.close()
+
+            return redirect(url_for('booking.confirmed', user=session['user_id'], reservation=reservation))
 
     return render_template("booking/finaliseBooking.html", seats=seats, seatid=seat_id,
-                           reservation=reservation, film_title=title, total=total, date=date, time=time,
+                           reservation='#', film_title=title, total=total, date=date, time=time,
                            fname=fname, lname=lname)
 
 ### x for x, last query redundant?
@@ -235,6 +239,7 @@ def confirmed(user, reservation):
     return render_template("booking/confirmation.html", user=user, reservation=reservation,
                            seats=seats, title=movie_title, fname=fname, lname=lname, date=date, time=time)
 
+
 @bp_booking.route('/expiredconfirmation/<user>/<reservation>', methods=['GET', 'POST'])
 @login_required
 def expired_confirmed(user, reservation):
@@ -259,6 +264,7 @@ def expired_confirmed(user, reservation):
 
     return render_template("booking/confirmation.html", user=user, reservation=reservation,
                            seat_count=seat_count, title=title, fname=fname, lname=lname, date=date, time=time)
+
 
 # Correct film title and time but wrong ID tied to it.
 @bp_booking.route('myaccount')
@@ -293,7 +299,6 @@ def my_account():
     old_reservations = []
     for i in range(len(booking_data)):
         old_reservations.append((booking_data[i][0], booking_data[i][1].strftime('%d-%m-%Y  %H:%M'), booking_data[i][2]))
-
 
     return render_template('booking/myAccount.html', reservations=user_reservations, old_reservations=old_reservations)
 
