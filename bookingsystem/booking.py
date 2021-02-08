@@ -33,11 +33,12 @@ def home():
         cinema_name_url = ''.join(results.split()).lower()
         session['cinema_url'] = cinema_name_url
 
-        return redirect(url_for('booking.cinema_times', name=cinema_name_url,))
+        return redirect(url_for('booking.cinema_times', name=cinema_name_url, ))
 
     cur.close()
 
     return render_template('booking/selectCinema.html', cinemaDetails=cinema_details, film_titles=film_titles)
+
 
 @bp_booking.route('selectcinema/<film>')
 def film_info(film):
@@ -89,7 +90,6 @@ def cinema_times(name):
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
 
-
     return render_template('cinemabase.html', cinemaName=session['cinema_name'],
                            filmTimes=times.items(), weekDays=days)
 
@@ -111,7 +111,7 @@ def seat_select(screening):
     column = screen_no[1]
     auditoriumID = screen_no[2]
 
-    cur.execute("""SELECT seat_id
+    cur.execute("""     SELECT seat_id
                         FROM seat_reserved SR JOIN screening SCR on SR.screening_id=SCR.id 
                         WHERE SCR.id = (%s)""", (screening,))
     res = cur.fetchall()
@@ -124,27 +124,36 @@ def seat_select(screening):
                             WHERE seat.id = (%s) AND screening.id=(%s)""", (s, screening))
         reserved_numbers.append(cur.fetchone()[0])
 
+    if request.method=='POST':
+
+        ticket_value = request.form.get('hidden-ticket-value')
+        ticket_value = str(ticket_value)
+        seats = ticket_value.split(",")
+        session['seats'] = seats
+        return redirect(url_for('booking.process_ticket', screening=screening, auditorium=auditoriumID,))
+
     return render_template('booking/seatSelect.html', screeningId=screening,
                            title=title, time=time, rows=row, columns=column,
                            auditorium=auditoriumID, reserved_numbers=reserved_numbers)
 
 
-@bp_booking.route('/processticket/<auditorium>/<screening>', methods=['GET', 'POST'])
+@bp_booking.route('/processticket/<auditorium>/<screening>/', methods=['GET', 'POST'])
 @login_required
 def process_ticket(screening, auditorium):
-    ticket_value = request.form.get('hidden-ticket-value')
-    ticket_value = str(ticket_value)
-    seats = ticket_value.split(",")
 
     cur = db.connection.cursor()
     # Get seat ID's
     seat_id = []
-    for seatNum in seats:
+    count = []
+    for seatNum in session['seats']:
         cur.execute("""SELECT s.id
                         FROM seat s JOIN auditorium A on s.auditorium_id = A.id
                         WHERE A.id = (%s) AND s.number = (%s)""", (auditorium, seatNum))
+
+        count.append(seatNum)
         seat = cur.fetchone()
         seat_id.append(seat[0])
+
 
     cur.execute("""SELECT M.title, S.screening_start
                     FROM movie M JOIN screening S on S.movie_id=M.id
@@ -157,7 +166,7 @@ def process_ticket(screening, auditorium):
     date = datetime.strftime('%d %B')
     # Remove seconds
     time = datetime.strftime('%X')[:-3]
-    total = format(len(seats) * 9.60, '.2f')
+    total = format(len(session['seats']) * 9.60, '.2f')
     # Get name
     cur.execute("""SELECT first_name, last_name 
                     FROM `user` 
@@ -165,9 +174,11 @@ def process_ticket(screening, auditorium):
     query = cur.fetchone()
     fname = query[0]
     lname = query[1]
-
+    z = request.form
     if request.method == "POST":
+
         if 'expiration' in request.form:
+
             expiration_date = request.form['expiration']
             card_number = request.form['card_number']
 
@@ -195,13 +206,15 @@ def process_ticket(screening, auditorium):
                 cur.execute("INSERT INTO seat_reserved(seat_id, screening_id, reservation_id) "
                         "VALUES(%s, %s, %s)", (seat, screening, reservation))
                 db.connection.commit()
+
             cur.close()
 
             return redirect(url_for('booking.confirmed', user=session['user_id'], reservation=reservation))
 
-    return render_template("booking/finaliseBooking.html", seats=seats, seatid=seat_id,
-                           reservation='#', film_title=title, total=total, date=date, time=time,
+    return render_template("booking/finaliseBooking.html", seats=session['seats'], seatid=seat_id,
+                         film_title=title, total=total, date=date, time=time,
                            fname=fname, lname=lname)
+
 
 ### x for x, last query redundant?
 # Check this is the users account?
@@ -212,8 +225,7 @@ def confirmed(user, reservation):
 
     cur.execute("""SELECT S.number
                     FROM seat S JOIN seat_reserved SR ON SR.seat_id=S.id
-                    WHERE SR.seat_id IN (SELECT SR.seat_id FROM seat_reserved SR WHERE reservation_id=(%s))""",
-                (reservation,))
+                    WHERE SR.reservation_id=(%s)""", (reservation,))
     seats = [x[0] for x in cur.fetchall()]
 
     cur.execute("""SELECT first_name, last_name
@@ -298,7 +310,8 @@ def my_account():
     booking_data = cur.fetchall()
     old_reservations = []
     for i in range(len(booking_data)):
-        old_reservations.append((booking_data[i][0], booking_data[i][1].strftime('%d-%m-%Y  %H:%M'), booking_data[i][2]))
+        old_reservations.append(
+            (booking_data[i][0], booking_data[i][1].strftime('%d-%m-%Y  %H:%M'), booking_data[i][2]))
 
     return render_template('booking/myAccount.html', reservations=user_reservations, old_reservations=old_reservations)
 

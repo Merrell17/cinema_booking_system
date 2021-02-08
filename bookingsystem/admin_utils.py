@@ -105,6 +105,7 @@ def add_screen():
         
             db.connection.commit()
             cur.close()
+            flash("Screen Created!")
         else:
             flash(error)
 

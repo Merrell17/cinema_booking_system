@@ -19,7 +19,7 @@
 
 <tr>
 <td class="left">Name</td>
-<td class="right">{{ fname }} {{ lname }}</td>
+<td class="right">Hugh Merrell</td>
 </tr>
 <tr>
 <td class="left" >Film</td>
@@ -69,14 +69,14 @@
   </div>
 
   <div class="signup__field">
-    <input class="signup__input" type="text" name="card_name" id="card_name" required />
-    <label class="signup__label" for="card_name">Name on Card</label>
+    <input class="signup__input" type="text" name="expiration" id="expiration" required />
+    <label class="signup__label" for="expiration">Name on Card</label>
   </div>
 
 
     <div class="signup__field">
-    <input class="signup__input" type="text" name="expiration" id="expiration" required />
-    <label class="signup__label" for="expiration">MM/YY</label>
+    <input class="signup__input" type="text" name="fname" id="fname" required />
+    <label class="signup__label" for="fname">MM/YY</label>
   </div>
     <div class="signup__field">
     <input class="signup__input" type="text" name="lname" id="lname" required />
@@ -86,6 +86,17 @@
   <button type="submit">Book Tickets</button>
 </form>
 </div>
+<!--
+<div id="booking_summary">
+    <h1>Confirm Booking</h1>
+    <ul>
+    #{% for seat in seats%}
+        seat {{ seat }}
+    </ul>
+    #{% endfor %}
+</div>
+-->
+
 
 
 </body>
