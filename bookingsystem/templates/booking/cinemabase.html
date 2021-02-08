@@ -4,36 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/times.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <title>Select Cinema</title>
-   {% endblock %}
+{% endblock %}
+
+
 
 {% block body %}
-<body>
-
-    <h1>{{ cinemaName }}</h1>
-    <br>
-    <h3>Listings:</h3>
-
-    {%for a,b in filmTimes%}
-        <div style="background: lightgrey">
-        <h1>{{a}}</h1>
-        <img src="http://127.0.0.1:5000/static/imgs/{{ a }}.jpg" alt="..."  style="width: 200px;height:300px;">
-
-        {%for each, id in b %}
-            <ul>
-                <li>
-                    <a href = {{ url_for('booking.seat_select', screening=id) }}>{{ each }}</a>
-                </li>
-            </ul>
-             {%endfor%}
-        </div>
-        <br>
-    {%endfor%}
 
 
+{%for title, screentime_id in filmTimes%}
+ <h1>{{ title }}</h1>
+<div class="main">
+  <img src="http://127.0.0.1:5000/static/imgs/{{ title }}.jpg">
+  <div class="wrapper">
 
-</body>
-</html>
+    <span>
+      <h2>{{ weekDays[0] }}</h2>
+        <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[0] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+   </span>
+    <span><h2>{{ weekDays[1] }}</h2>
+        <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[1] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+    </span>
+    <span><h2>{{ weekDays[2] }}</h2>
+        <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[2] %}
+                <li>  <a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+    </span>
+    <span><h2>{{ weekDays[3] }}</h2>
+        <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[3] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+    </span>
+      <span><h2>{{ weekDays[4] }}</h2>
+          <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[4] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </span>
+      <span><h2>{{ weekDays[5] }}</h2>
+          <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[5] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </span>
+      <span><h2>{{ weekDays[6] }}</h2>
+          <ul>
+        {%for time, id in screentime_id %}
+            {% if time[0:5] == weekDays[6] %}
+                <li><a href = {{ url_for('booking.seat_select', screening=id) }}>{{ time[5:] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </span>
+  </div>
+</div>
+{% endfor %}
+
+
+
 {% endblock %}
+
+

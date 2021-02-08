@@ -24,7 +24,7 @@ def test_register(client, app):
     ('', '', '', '',''),
     ('a', '', '', '', '' ),
     ('a', 'b','', '', '' ),
-    ('test', 'test', '', '', ''),
+    ('test', 'test', 'test@mail.com', 'john', 'Doe'),
 ))
 def test_register_validate_input(client, username, password, email, fname, lname,):
     response = client.post(

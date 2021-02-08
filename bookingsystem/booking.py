@@ -2,7 +2,7 @@ import werkzeug
 from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app
 from bookingsystem.extensions import db
 import json
-
+import datetime
 from bookingsystem.auth import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -79,12 +79,19 @@ def cinema_times(name):
     times = {}
     for t in film_times:
         if t[0] not in times.keys():
-            times[t[0]] = [(t[1].strftime('%Y-%m-%d::%H-%M'), t[2])]
+            times[t[0]] = [(t[1].strftime('%d/%m  %H:%M'), t[2])]
         else:
-            times[t[0]].append((t[1].strftime('%Y-%m-%d::%H-%M'), t[2]))
+            times[t[0]].append((t[1].strftime('%d/%m  %H:%M'), t[2]))
+
+    dt = datetime.datetime.today()
+    week_dates = [dt + datetime.timedelta(days=i) for i in range(7)]
+    days = []
+    for day in week_dates:
+        days.append(day.strftime('%d/%m'))
+
 
     return render_template('cinemabase.html', cinemaName=session['cinema_name'],
-                           filmTimes=times.items())
+                           filmTimes=times.items(), weekDays=days)
 
 
 @bp_booking.route('foo/<screening>', methods=["GET", "POST"])
@@ -186,6 +193,7 @@ def process_ticket(screening, auditorium):
                            reservation=reservation, film_title=title, total=total, date=date, time=time)
 
 ### x for x, last query redundant?
+# Check this is the users account?
 @bp_booking.route('/confirmation/<user>/<reservation>', methods=['GET', 'POST'])
 @login_required
 def confirmed(user, reservation):
@@ -246,7 +254,7 @@ def expired_confirmed(user, reservation):
     return render_template("booking/confirmation.html", user=user, reservation=reservation,
                            seat_count=seat_count, title=title, fname=fname, lname=lname, date=date, time=time)
 
-
+# Correct film title and time but wrong ID tied to it.
 @bp_booking.route('myaccount')
 @login_required
 def my_account():
@@ -257,14 +265,15 @@ def my_account():
     reservations_ids = cur.fetchall()
 
     user_reservations = []
-    for i, res in enumerate(reservations_ids):
-        cur.execute("""SELECT M.title, S.screening_start, R.id 
-                            FROM reservation R, movie M JOIN screening S on M.id = S.movie_id
-                            WHERE S.movie_id IN (SELECT movie_id
-                            FROM screening S JOIN reservation R ON R.screening_id=S.id
-                            WHERE R.screening_id IN (SELECT screening_id FROM reservation WHERE id=(%s)))
-                            """, (res,))
-        reservation = cur.fetchall()[i]
+    for reservation_id in reservations_ids:
+        # Get
+        cur.execute("""SELECT M.title, S.screening_start, R.id
+                        FROM reservation R
+                        JOIN screening S on R.screening_id=S.id
+                        JOIN movie M on S.movie_id=M.id
+                        WHERE R.id=(%s);
+                            """, (reservation_id,))
+        reservation = cur.fetchone()
 
         # Title, Time, ID
         reservation_ = (reservation[0], reservation[1].strftime('%d-%m-%Y  %H:%M'), reservation[2])

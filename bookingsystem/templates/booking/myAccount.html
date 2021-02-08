@@ -41,7 +41,7 @@
 <h5>Active Reservations</h5>
 <ul>
     {% for film,time,id in reservations %}
-    <li><a href="{{ url_for('booking.confirmed',user=session['user_id'], reservation=id) }}">{{ film }}: {{ time }}</a></li>
+    <li><a href="{{ url_for('booking.confirmed',user=session['user_id'], reservation=id) }}">{{ film }}: {{ time }} {{ id }}</a></li>
     {% endfor %}
 </ul>
 
@@ -50,7 +50,7 @@
         <ul>
     {% for film,time,id in old_reservations %}
 
-    <li><a href="{{ url_for('booking.expired_confirmed',user=session['user_id'], reservation=id) }}">{{ film}}: {{ time }}</a></li>
+    <li><a href="{{ url_for('booking.expired_confirmed',user=session['user_id'], reservation=id) }}">{{ film}}: {{ time }} {{ id }}</a></li>
     {% endfor %}
     {% endif %}
 </ul>

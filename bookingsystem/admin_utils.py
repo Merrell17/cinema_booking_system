@@ -117,8 +117,6 @@ def add_screen():
 def add_film():
     if request.method == "POST":
         cur = db.connection.cursor()
-
-
         imbd_id = request.form['imdb_id']
         imbd_film = None
         error = None
@@ -189,8 +187,9 @@ def create_screening():
     else:
         film_details = []
 
-    auditorium_details = cur.execute('SELECT auditorium.id, name, screen_name FROM auditorium '
-                                     'INNER JOIN cinema ON auditorium.cinema_id = cinema.id')
+    auditorium_details = cur.execute("""SELECT auditorium.id, name, screen_name FROM auditorium 
+                                        INNER JOIN cinema ON auditorium.cinema_id = cinema.id
+                                        ORDER BY cinema.name, auditorium.screen_name""")
     auditorium_details = cur.fetchall()
 
     if request.method == "POST":
