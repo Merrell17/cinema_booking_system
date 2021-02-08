@@ -14,17 +14,14 @@ img {
   display: grid;
   grid-template-columns: repeat(7, 243px);
   grid-gap: 1px;
-
-
 }
 
 .wrapper > span {
   border-style: solid;
-  border
   border-color: #8e262d;
   border-width: 2px;
-
 }
+
 .wrapper > span > ul {
   height: 250px;
   display: flex;
@@ -34,10 +31,6 @@ img {
   margin: 5px;
   padding: 5px;
   font-size: 20px;
-
-}
-.wrapper > span > ul > li > a {
-  
 }
 
 .wrapper > span > h2 {

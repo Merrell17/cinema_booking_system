@@ -158,7 +158,13 @@ def process_ticket(screening, auditorium):
     # Remove seconds
     time = datetime.strftime('%X')[:-3]
     total = format(len(seats) * 9.60, '.2f')
-
+    # Get name
+    cur.execute("""SELECT first_name, last_name 
+                    FROM `user` 
+                    WHERE id=(%s)""", (session['user_id'], ))
+    query = cur.fetchone()
+    fname = query[0]
+    lname = query[1]
     if request.method == "POST":
         # expiration_date = request.form['expiration']
         # card_number = request.form['card_number']
@@ -190,7 +196,8 @@ def process_ticket(screening, auditorium):
         cur.close()
 
     return render_template("booking/finaliseBooking.html", seats=seats, seatid=seat_id,
-                           reservation=reservation, film_title=title, total=total, date=date, time=time)
+                           reservation=reservation, film_title=title, total=total, date=date, time=time,
+                           fname=fname, lname=lname)
 
 ### x for x, last query redundant?
 # Check this is the users account?
@@ -214,10 +221,9 @@ def confirmed(user, reservation):
 
     # Get movie's title
     cur.execute("""SELECT M.title, S.id, S.screening_start
-                    FROM movie M JOIN screening S on M.id = S.movie_id
-                    WHERE S.movie_id IN (SELECT movie_id
-                    FROM screening S JOIN reservation R ON R.screening_id=S.id
-                    WHERE R.screening_id IN (SELECT screening_id FROM reservation WHERE id=(%s)))""", (reservation,))
+                    FROM reservation R JOIN screening S on R.screening_id = S.id
+                    JOIN movie M on M.id=S.movie_id
+                    WHERE R.id=(%s);""", (reservation,))
     query = cur.fetchone()
     movie_title = query[0]
     screening = query[1]
