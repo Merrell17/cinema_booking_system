@@ -256,3 +256,10 @@ Screen time page now works as expected. Editted create screening page to order s
 * *6 hours* Large chain of bugs found, mainly ended up being due to the use of <form action="link_to_next_page".. > rather than having python listening for a POST request with 
   if request.method=='POST' and rerouting to "link_to_next_page" from there. This was triggering the subsequent functions request.method=='POST' which was causing the previous bug with data being inserted before submitting form. Other issues with reservation_id being set to an empty string, list of seats selected being passed to function was being reformatted to a list of single chars, process_ticket function was being rerun when clicking subsequent page causing the selected seats to be set to 'None'.
   Bug fixed refactoring to use using  if request.method=='POST', processing data and redirecting from there. Session variable used to hold selected tickets to stop them being reformatted to list of chars.  
+ 
+ ## 13 Febuary 2021
+* *1 hours* Fixed bug in tests, request being redirected before running function 
+* *1 hours* Wrote up requirements, formatted user stories.
+
+ ## 22 Febuary 2021
+* *5 hours* Wrote up software development methodology, design section and started implementation 
