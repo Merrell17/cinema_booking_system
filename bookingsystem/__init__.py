@@ -8,7 +8,6 @@ from bookingsystem import auth, admin_utils, booking
 from bookingsystem.extensions import db
 
 def create_app(test_config=None):
-
     app = Flask(__name__, instance_relative_config=True)
     admin = Admin(app, name='microblog', template_mode='bootstrap3')
     app.config['SECRET_KEY'] = 'key'

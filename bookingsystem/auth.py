@@ -13,12 +13,13 @@ bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 @bp_auth.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
+        cur = db.connection.cursor()
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         fname = request.form['fname']
         lname = request.form['lname']
-        cur = db.connection.cursor()
+
         error = None
 
         if not username:
@@ -50,7 +51,6 @@ def register():
             flash('Account created!')
             return redirect(url_for('auth.login'))
 
-        db.connection.commit()  #tab in?
         flash(error)
 
     return render_template('auth/register.html')

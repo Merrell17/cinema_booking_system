@@ -12,11 +12,10 @@ def test_index(client, auth):
 
 @pytest.mark.parametrize('path', (
     #'/booking/myaccount',
-    '/booking/processticket/40/80',
+    '/booking/processticket/40/80/',
 
 ))
 def test_login_required(client, path):
-
     response = client.post(path)
     assert response.headers['Location'] == 'http://localhost/auth/login'
 

@@ -144,13 +144,13 @@ def process_ticket(screening, auditorium):
     cur = db.connection.cursor()
     # Get seat ID's
     seat_id = []
-    count = []
+
     for seatNum in session['seats']:
         cur.execute("""SELECT s.id
                         FROM seat s JOIN auditorium A on s.auditorium_id = A.id
                         WHERE A.id = (%s) AND s.number = (%s)""", (auditorium, seatNum))
 
-        count.append(seatNum)
+
         seat = cur.fetchone()
         seat_id.append(seat[0])
 
@@ -174,7 +174,7 @@ def process_ticket(screening, auditorium):
     query = cur.fetchone()
     fname = query[0]
     lname = query[1]
-    z = request.form
+
     if request.method == "POST":
 
         if 'expiration' in request.form:

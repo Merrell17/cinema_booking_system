@@ -9,7 +9,7 @@ def test_register(client, app):
         '/auth/register', data={'username': 'a', 'password': 'a', 'email': 'ab@example.com',
                                 'fname': 'a', 'lname': 'b'}
     )
-    # Check we're being redirected to
+    # Check we're being redirected to the login page after registering
     assert 'http://localhost/auth/login' == response.headers['Location']
 
     with app.app_context():
@@ -41,6 +41,7 @@ def test_login(client, auth):
         assert session['user_id'] != 0
         assert g.user is not None
 
+
 def test_admin_login(client, auth, app):
     auth.login(username='admin', password='1234')
     with client:
@@ -61,7 +62,6 @@ def test_login_validate_input(auth, username, password, message):
 
 def test_logout(client, auth):
     auth.login()
-
     with client:
         auth.logout()
         assert 'user_id' not in session
