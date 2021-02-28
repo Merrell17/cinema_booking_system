@@ -13,14 +13,19 @@ def create_app(test_config=None):
     app.config['SECRET_KEY'] = 'key'
     app.config['MYSQL_USER'] = 'root'
 
+    # Pythonanywhere pwd: 'root1234'
     # AWS pwd: '12345678'
     # Local pwd: '1234'
-    app.config['MYSQL_PASSWORD'] = '12345678'
-    app.config['MYSQL_DB'] = 'flaskapp'
+    app.config['MYSQL_PASSWORD'] = 'root1234'
+
+    # Pythonanywhere dbname = 'Merrell17$flaskapp'
+    # Local dbname: = 'flaskapp'
+    app.config['MYSQL_DB'] = 'Merrell17$flaskapp'
 
     # AWS host: 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
+    # Pythonanywhere host: 'Merrell17.mysql.pythonanywhere-services.com'
     # Local host : 'localhost'
-    app.config['MYSQL_HOST'] = 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
+    app.config['MYSQL_HOST'] = 'Merrell17.mysql.pythonanywhere-services.com'
     app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
 
     if test_config is None:
