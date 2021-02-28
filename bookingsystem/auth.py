@@ -93,6 +93,7 @@ def load_logged_in_user():
         )
         g.user = cur.fetchone()
         # Store whether use is admin
+        print(g.user)
         is_admin = g.user[6]
         g.admin = bool(is_admin)
 

@@ -41,7 +41,7 @@
 <h5>Active Reservations</h5>
 <ul>
     {% for film,time,id in reservations %}
-    <li><a href="{{ url_for('booking.confirmed',user=session['user_id'], reservation=id) }}">{{ film }}: {{ time }} {{ id }}</a></li>
+    <li><a href="{{ url_for('booking.confirmed',user=session['user_id'], reservation=id) }}">{{ film }}: {{ time }} </a></li>
     {% endfor %}
 </ul>
 

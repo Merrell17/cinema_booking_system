@@ -12,9 +12,15 @@ def create_app(test_config=None):
     admin = Admin(app, name='microblog', template_mode='bootstrap3')
     app.config['SECRET_KEY'] = 'key'
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = '1234'
+
+    # AWS pwd: '12345678'
+    # Local pwd: '1234'
+    app.config['MYSQL_PASSWORD'] = '12345678'
     app.config['MYSQL_DB'] = 'flaskapp'
-    app.config['MYSQL_HOST'] = 'localhost'
+
+    # AWS host: 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
+    # Local host : 'localhost'
+    app.config['MYSQL_HOST'] = 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
     app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
 
     if test_config is None:

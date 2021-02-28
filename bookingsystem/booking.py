@@ -49,7 +49,7 @@ def film_info(film):
     cur.execute("""SELECT C.name, S.Screening_Start, S.id 
                 FROM screening S JOIN movie M ON S.movie_id = M.id
                 JOIN auditorium A ON S.auditorium_id = A.id
-                JOIN cinema C ON A.Cinema_id = c.id
+                JOIN cinema C ON A.Cinema_id = C.id
                 WHERE M.title = (%s) AND S.Screening_Start > NOW()
                 ORDER BY M.title, S.Screening_Start""", (film,))
 
@@ -71,8 +71,8 @@ def cinema_times(name):
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
                     FROM screening S JOIN movie M ON S.movie_id = M.id
                     JOIN auditorium A ON S.auditorium_id = A.id
-                    JOIN cinema C ON A.Cinema_id = c.id
-                    WHERE c.name = (%s) AND S.Screening_Start > NOW()
+                    JOIN cinema C ON A.Cinema_id = C.id
+                    WHERE C.name = (%s) AND S.Screening_Start > NOW()
                     ORDER BY M.title, S.Screening_Start""", (session['cinema_name'],))
 
     film_times = cur.fetchall()
@@ -98,7 +98,7 @@ def cinema_times(name):
 def seat_select(screening):
     cur = db.connection.cursor()
     cur.execute("""SELECT M.title, S.Screening_Start
-                    FROM screening S JOIN movie M ON s.movie_id = M.id
+                    FROM screening S JOIN movie M ON S.movie_id = M.id
                     WHERE S.id = (%s)""", (screening,))
     screening_details = cur.fetchone()
     title = screening_details[0]
