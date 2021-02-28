@@ -13,7 +13,6 @@ Jinja2==2.11.2
 lxml==4.6.2
 MarkupSafe==1.1.1
 mysql==0.0.2
-mysqlclient @ file:///C:/Users/Hugh/PycharmProjects/New%20folder/cinema_booking_system/mysqlclient-1.4.6-cp39-cp39-win_amd64.whl
 packaging==20.8
 pluggy==0.13.1
 py==1.10.0
