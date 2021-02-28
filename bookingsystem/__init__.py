@@ -11,7 +11,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     admin = Admin(app, name='microblog', template_mode='bootstrap3')
     app.config['SECRET_KEY'] = 'key'
-    app.config['MYSQL_USER'] = 'root'
+    app.config['MYSQL_USER'] = 'Merrell17'
 
     # Pythonanywhere pwd: 'root1234'
     # AWS pwd: '12345678'
