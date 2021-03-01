@@ -165,8 +165,10 @@ def add_film():
 
             # Testing purposes
             try:
+
                 image = request.files['movie_image']
                 image_name = title + ".jpg"
+                print(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
                 image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
             except:
                 pass

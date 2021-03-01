@@ -29,7 +29,11 @@ def create_app(test_config=None):
     # Pythonanywhere host: 'Merrell17.mysql.pythonanywhere-services.com'
     # Local host : 'localhost'
     app.config['MYSQL_HOST'] = 'localhost'
-    app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
+
+    root_folder = os.path.dirname(os.path.abspath(__file__))
+    images = os.path.join('static', 'imgs')
+    app.config['IMAGE_UPLOADS'] = os.path.join(root_folder, images)
+    # app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
