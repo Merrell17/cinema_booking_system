@@ -94,7 +94,7 @@ def cinema_times(name):
                            filmTimes=times.items(), weekDays=days)
 
 
-@bp_booking.route('foo/<screening>', methods=["GET", "POST"])
+@bp_booking.route('/<screening>', methods=["GET", "POST"])
 def seat_select(screening):
     cur = db.connection.cursor()
     cur.execute("""SELECT M.title, S.Screening_Start
