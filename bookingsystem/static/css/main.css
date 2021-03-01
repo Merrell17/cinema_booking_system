@@ -21,6 +21,7 @@ nav {
     min-height: 8vh;
     background-color: #8e262d;
     font-family: "Poppins", sans-serif;
+    z-index: 2;
 }
 
 .logo {
@@ -28,18 +29,22 @@ nav {
     text-transform: uppercase;
     letter-spacing: 5px;
     font-size: 20px;
+
 }
 
 .nav-links {
     display: flex;
     justify-content: space-around;
     width: 33%;
+
+
 }
 
 
 
 .nav-links li{
     list-style: none;
+
 }
 
 .nav-links a{
@@ -48,10 +53,12 @@ nav {
     letter-spacing: 5px;
     font-weight: bold;
     font-size: 14px;
+
 }
 
 .burger{
    display: none;
+
 }
 
 .burger div{
@@ -59,6 +66,7 @@ nav {
     height: 3px;
     background-color: rgb(226, 226, 226);
     margin: 5px;
+
 }
 
 @media screen and (max-width: 1024px){
@@ -83,12 +91,15 @@ nav {
         width: 50%;
         transform: translateX(100%);
         transition: transform 0.5s ease-in;
+
     }
     .nav-links li{
         opacity: 0;
+
     }
     .burger{
         display: block;
+
     }
 }
 
@@ -110,4 +121,5 @@ nav {
 
 body {
     padding-top: 71px;
+
 }
