@@ -263,3 +263,19 @@ Screen time page now works as expected. Editted create screening page to order s
 
  ## 22 Febuary 2021
 * *5 hours* Wrote up software development methodology, design section and started implementation 
+
+##  27 Febuary 2021
+* *0.5 hours* Looked in to various means of launching database and web app
+* *4.5 hours* Configured an AWS RDS instance to hold the database. Configured an AWS EC2 instance with necessary requirements to edit RDS instance. Looked in to migrating current database but too time consuming. Many issues with AWS security groups and being denied access to cloud database from local host. Fixed issues and editted code base to be compatible with updated version of MySQL used by RDS and was able to modify AWS hosted database via localhost application. 
+##  28 Febuary 2021
+* *0.5 hours* Looked in to hosting flask on EC2 along with the database but pythonanywhere was said to be much faster 
+* *6 hours* Launched web application on pythonanywhere. More errors connecting to AWS from here and access was denied to the database. Eventually gave up on AWS and decided to launch database on pythonanywhere's database host service. Got web app running, errors with adding films via IMDb id and images loading.  
+
+##  1 March 2021
+* *1.5 hours* Images weren't being found on pythonanywhere. Refactored main code base to ensure relative path would be found on pythonanywhere host. Images now loading. 
+* *1 hours* Tried to fix IMDb connection error. Found thread saying outbound connections to non-whitelisted were denied without a paid account, imdb.com wasn't on the list which was causing the issue. Will pay for account to fix this when usability testing starts. 
+* *1 hours* Remade wireframes
+* *1.5 hours* Wrote more implementation chapter of disseration 
+* *1 hours* Looked in to usability testing and the possible pros and cons of each method. Google form with link to website and tasks to perform seems most appopriate. 
+* *1.5 hours* Fixed small issues with urls, sidebar being overlapped by form entries and website errors when entering certain urls e.g for a reservation that doesn't exist. 
+
