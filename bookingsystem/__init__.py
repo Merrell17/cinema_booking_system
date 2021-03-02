@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, g
 from flask_mysqldb import MySQL
 from flask_admin import Admin
 from bookingsystem import auth, admin_utils, booking
@@ -14,25 +14,26 @@ def create_app(test_config=None):
 
     # Local user: 'root'
     # Pythonanywhere user: 'Merrell17'
-    app.config['MYSQL_USER'] = 'Merrell17'
+    app.config['MYSQL_USER'] = 'root'
 
     # Pythonanywhere pwd: 'root1234'
     # AWS pwd: '12345678'
     # Local pwd: '1234'
-    app.config['MYSQL_PASSWORD'] = 'root1234'
+    app.config['MYSQL_PASSWORD'] = '1234'
 
     # Pythonanywhere dbname = 'Merrell17$flaskapp'
     # Local dbname: = 'flaskapp'
-    app.config['MYSQL_DB'] = 'Merrell17$flaskapp'
+    app.config['MYSQL_DB'] = 'flaskapp'
 
     # AWS host: 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
     # Pythonanywhere host: 'Merrell17.mysql.pythonanywhere-services.com'
     # Local host : 'localhost'
-    app.config['MYSQL_HOST'] = 'Merrell17.mysql.pythonanywhere-services.com'
+    app.config['MYSQL_HOST'] = 'localhost'
 
     root_folder = os.path.dirname(os.path.abspath(__file__))
     images = os.path.join('static', 'imgs')
     app.config['IMAGE_UPLOADS'] = os.path.join(root_folder, images)
+
     # app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
 
     if test_config is None:

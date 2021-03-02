@@ -11,8 +11,9 @@ img {
 
 .wrapper {
   height: 100px;
+  width: auto;
   display: grid;
-  grid-template-columns: repeat(7, 243px);
+  grid-template-columns:repeat(7, 27vh);
   grid-gap: 1px;
 }
 

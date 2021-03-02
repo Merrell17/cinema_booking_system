@@ -140,19 +140,21 @@ def seat_select(screening):
 @bp_booking.route('/processticket/<auditorium>/<screening>/', methods=['GET', 'POST'])
 @login_required
 def process_ticket(screening, auditorium):
-
     cur = db.connection.cursor()
     # Get seat ID's
     seat_id = []
 
-    for seatNum in session['seats']:
-        cur.execute("""SELECT s.id
-                        FROM seat s JOIN auditorium A on s.auditorium_id = A.id
-                        WHERE A.id = (%s) AND s.number = (%s)""", (auditorium, seatNum))
-
-
-        seat = cur.fetchone()
-        seat_id.append(seat[0])
+    # Ensure that user has gone through select_seats and hasn't just entered the URL for the page
+    try:
+        for seatNum in session['seats']:
+            cur.execute("""SELECT s.id
+                            FROM seat s JOIN auditorium A on s.auditorium_id = A.id
+                            WHERE A.id = (%s) AND s.number = (%s)""", (auditorium, seatNum))
+            seat = cur.fetchone()
+            seat_id.append(seat[0])
+    # Redirect invalid means of reaching the page
+    except (KeyError, TypeError) as e:
+        return redirect(url_for('booking.home'))
 
 
     cur.execute("""SELECT M.title, S.screening_start
@@ -161,6 +163,10 @@ def process_ticket(screening, auditorium):
                     FROM screening S 
                     WHERE S.id=(%s))""", (screening,))
     query = cur.fetchone()
+
+    if query is None:
+        return (redirect(url_for('booking.home')))
+
     title = query[0]
     datetime = query[1]
     date = datetime.strftime('%d %B')
