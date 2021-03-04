@@ -16,9 +16,15 @@
 
     <h3>Screenings:</h3><br>
 
+<div id="week-counter">
+{% if weekCount > 0 %}
+<a id='previous' href= {{ url_for('booking.cinema_times', name=session['cinema_name'], week=weekCount-1 ) }}> Previous Week </a>
+{% endif %}
+<a id='next' href= {{ url_for('booking.cinema_times', name=session['cinema_name'], week=weekCount+1 ) }}> Next Week </a>
+</div>
 
 
-{%for title, screentime_id in filmTimes%}
+   {%for title, screentime_id in filmTimes%}
  <h1>{{ title }}</h1>
 <div class="main">
   <img src="/static/imgs/{{ title }}.jpg">

@@ -33,7 +33,7 @@ def home():
         cinema_name_url = ''.join(results.split()).lower()
         session['cinema_url'] = cinema_name_url
 
-        return redirect(url_for('booking.cinema_times', name=cinema_name_url, ))
+        return redirect(url_for('booking.cinema_times', name=cinema_name_url, week=0 ))
 
     cur.close()
 
@@ -65,8 +65,9 @@ def film_info(film):
     return render_template('booking/filmInfo.html', title=film, details=details, filmTimes=times.items())
 
 
-@bp_booking.route('/cinema/<name>', methods=["GET", "POST"])
-def cinema_times(name):
+@bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
+def cinema_times(name, week):
+    week = int(week)
     cur = db.connection.cursor()
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
                     FROM screening S JOIN movie M ON S.movie_id = M.id
@@ -85,13 +86,14 @@ def cinema_times(name):
             times[t[0]].append((t[1].strftime('%d/%m  %H:%M'), t[2]))
 
     dt = datetime.datetime.today()
+    dt = dt + datetime.timedelta(weeks=week)
     week_dates = [dt + datetime.timedelta(days=i) for i in range(7)]
     days = []
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
 
     return render_template('cinemabase.html', cinemaName=session['cinema_name'],
-                           filmTimes=times.items(), weekDays=days)
+                           filmTimes=times.items(), weekDays=days, weekCount=week)
 
 
 @bp_booking.route('/<screening>', methods=["GET", "POST"])
@@ -124,7 +126,7 @@ def seat_select(screening):
                             WHERE seat.id = (%s) AND screening.id=(%s)""", (s, screening))
         reserved_numbers.append(cur.fetchone()[0])
 
-    if request.method=='POST':
+    if request.method == 'POST':
 
         ticket_value = request.form.get('hidden-ticket-value')
         ticket_value = str(ticket_value)
