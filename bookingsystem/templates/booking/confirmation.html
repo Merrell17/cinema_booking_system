@@ -54,16 +54,18 @@
 <tr>
 {% if seats %}
 <td class="left">Your Seat(s)</td>
-<td class="right">Seat {{ seats[0] }} </td>
+<td class="right">Seat {{ seats[0]+1 }} </td>
     {% for i in range(1,(seats|length)) %}
         <tr>
         <td class="left"></td>
-        <td class="right">Seat {{ seats[i] }} </td>
+        <td class="right">Seat {{ seats[i]+1 }} </td>
         </tr>
 
     {% endfor %}
 {% endif %}
-{% if seat_count %}
+
+
+    {% if seat_count %}
 <td class="left">Number of Seats</td>
 <td class="right">{{ seat_count }} </td>
 {% endif %}
