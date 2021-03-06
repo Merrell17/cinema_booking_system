@@ -30,7 +30,7 @@ def home():
         results = list(cur)[0][0]
         session['cinema_name'] = results
         session['cinema_id'] = cinema_id
-
+        session['cinema_url'] = results
         return redirect(url_for('booking.cinema_times', name=session['cinema_name'], week=0 ))
 
     cur.close()

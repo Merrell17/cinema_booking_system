@@ -30,7 +30,7 @@
 
             {% if session['cinema_name'] and session['cinema_url'] %}
             <li>
-                <a href="{{ url_for('booking.cinema_times', name=session['cinema_url'], week=0) }}">{{ session['cinema_name'] }}</a>
+                <a href="{{ url_for('booking.cinema_times', name=session['cinema_name'], week=0) }}">{{ session['cinema_name'] }}</a>
             </li>
             {% endif %}
             <li>
