@@ -68,6 +68,10 @@ def film_info(film):
 # Returns 7 days of cinema times with a week delta
 @bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
 def cinema_times(name, week=0):
+
+    if session['cinema_url'] != name:
+        abort(404)
+
     name = name.title()
     # Make sure digit is entered and not too large for int conversion
     if week.isdigit() and len(week) < 4:
@@ -80,7 +84,7 @@ def cinema_times(name, week=0):
 
     cur = db.connection.cursor()
 
-    cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (name, ))
+    cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (session['cinema_name'], ))
     check_cinema_exists = cur.fetchone()
 
     # Bad URL entry or possible cinema in session was deleted so we remove it
