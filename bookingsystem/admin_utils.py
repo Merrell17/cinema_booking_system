@@ -280,6 +280,8 @@ def deletions():
             cinema_id = request.form['cinemas']
             cur.execute("""DELETE FROM cinema WHERE id=(%s)""", (cinema_id,))
             db.connection.commit()
+            session['cinema_name'] = None
+            session['cinema_url'] = None
             flash("Successfully Deleted Cinema")
             return redirect(url_for('admin_utils.deletions'))
 
