@@ -30,10 +30,8 @@ def home():
         results = list(cur)[0][0]
         session['cinema_name'] = results
         session['cinema_id'] = cinema_id
-        cinema_name_url = ''.join(results.split()).lower()
-        session['cinema_url'] = cinema_name_url
 
-        return redirect(url_for('booking.cinema_times', name=cinema_name_url, week=0 ))
+        return redirect(url_for('booking.cinema_times', name=session['cinema_name'], week=0 ))
 
     cur.close()
 
@@ -69,9 +67,6 @@ def film_info(film):
 @bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
 def cinema_times(name, week=0):
 
-    if session['cinema_url'] != name:
-        abort(404)
-
     # Make sure digit is entered and not too large for int conversion
     if week.isdigit() and len(week) < 4:
         week = int(week)
@@ -83,13 +78,11 @@ def cinema_times(name, week=0):
 
     cur = db.connection.cursor()
 
-    cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (session['cinema_name'], ))
+    cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (name, ))
     check_cinema_exists = cur.fetchone()
 
     # Bad URL entry or possible cinema in session was deleted so we remove it
     if check_cinema_exists is None:
-        session['cinema_name'] = None
-        session['cinema_url'] = None
         abort(404)
 
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
@@ -117,8 +110,9 @@ def cinema_times(name, week=0):
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
 
-    return render_template('cinemabase.html', cinemaName=session['cinema_name'],
-                           filmTimes=times.items(), weekDays=days, weekCount=week)
+    return render_template('cinemabase.html', cinemaName=name.title(),
+                           filmTimes=times.items(), weekDays=days, weekCount=week,
+                           cinemaURL=name)
 
 
 @bp_booking.route('/<screening>', methods=["GET", "POST"])

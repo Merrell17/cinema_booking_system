@@ -19,7 +19,7 @@ def add_cinema():
     # Get form details
     if request.method == "POST":
         address_details = request.form
-        cinema_name = address_details['name'].title()
+        cinema_name = address_details['name']
         address1 = address_details['address1']
         address2 = address_details['address2']
         city = address_details['city']
