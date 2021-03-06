@@ -18,6 +18,12 @@ body {
   z-index: 0;
 }
 
+@media screen and (max-width: 500px){
+  body{
+    flex-direction: column;
+  }
+}
+
 button,
 input {
   border: none;
@@ -169,4 +175,5 @@ button:hover {
    width:50%;
   text-align: right;
 }
+
 
