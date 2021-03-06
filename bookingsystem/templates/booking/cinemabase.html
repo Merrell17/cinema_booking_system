@@ -27,7 +27,12 @@
    {%for title, screentime_id in filmTimes%}
  <h1>{{ title }}</h1>
 <div class="main">
-  <img src="/static/imgs/{{ title }}.jpg">
+
+    <a href="{{ url_for('booking.film_info', film=title)}}">
+
+         <img class="film-image" src="/static/imgs/{{ title }}.jpg" alt="Image not found"  onerror="this.onerror=null;this.src='/static/imgs/Image Not Given.jpg';">
+        </a>
+
   <div class="wrapper">
 
     <span>

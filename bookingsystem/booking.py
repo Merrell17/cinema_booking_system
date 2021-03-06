@@ -1,5 +1,5 @@
 import werkzeug
-from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app
+from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app, abort
 from bookingsystem.extensions import db
 import json
 import datetime
@@ -65,11 +65,26 @@ def film_info(film):
     return render_template('booking/filmInfo.html', title=film, details=details, filmTimes=times.items(),)
 
 
+# Returns 7 days of cinema times with a week delta
 @bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
 def cinema_times(name, week=0):
     name = name.title()
-    week = int(week)
+    # Make sure digit is entered and not too large for int conversion
+    if week.isdigit() and len(week) < 4:
+        week = int(week)
+        # Prevent users going unnecessarily distant and ambiguous dates
+        if week > 51:
+            return redirect(url_for('booking.cinema_times', name=name, week=51))
+    else:
+        abort(404)
+
     cur = db.connection.cursor()
+
+    cur.execute("""SELECT * FROM CINEMA WHERE `name` = (%s)""", (name, ))
+    check_cinema_exists = cur.fetchone()
+    if check_cinema_exists is None:
+        abort(404)
+
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
                     FROM screening S JOIN movie M ON S.movie_id = M.id
                     JOIN auditorium A ON S.auditorium_id = A.id
@@ -87,6 +102,7 @@ def cinema_times(name, week=0):
         else:
             times[t[0]].append((t[1].strftime('%d/%m  %H:%M'), t[2]))
 
+    # Shift the date by the number of weeks selected and get all screenings
     dt = datetime.datetime.today()
     dt = dt + datetime.timedelta(weeks=week)
     week_dates = [dt + datetime.timedelta(days=i) for i in range(7)]
