@@ -21,9 +21,9 @@ def create_app(test_config=None):
     # Local pwd: '1234'
     app.config['MYSQL_PASSWORD'] = 'root1234'
 
-    # Pythonanywhere dbname = 'Merrell17$flaskapp'
+    # Pythonanywhere dbname = 'Merrell17$flaskbooking'
     # Local dbname: = 'flaskapp'
-    app.config['MYSQL_DB'] = 'Merrell17$flaskapp'
+    app.config['MYSQL_DB'] = 'Merrell17$flaskbooking'
 
     # AWS host: 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
     # Pythonanywhere host: 'Merrell17.mysql.pythonanywhere-services.com'
@@ -33,7 +33,7 @@ def create_app(test_config=None):
     root_folder = os.path.dirname(os.path.abspath(__file__))
     images = os.path.join('static', 'imgs')
     app.config['IMAGE_UPLOADS'] = os.path.join(root_folder, images)
-
+    print(os.path.join(root_folder, images))
     # app.config['IMAGE_UPLOADS'] = os.path.abspath("C:/Users/Hugh/PycharmProjects/New folder/cinema_booking_system/bookingsystem/static/imgs")
 
     if test_config is None:
@@ -54,5 +54,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp_auth)
     app.register_blueprint(admin_utils.bp_admin)
     app.register_blueprint(booking.bp_booking)
+
+    # Pythonanywhere: False
     app.debug = True
     return app

@@ -2,7 +2,7 @@
 -- tables
 -- Table: address
 CREATE TABLE `address` (
-    `id` int NOT NULL,
+    `id` int NOT NULL AUTO_INCREMENT,
     `address1` varchar(120) NOT NULL,
     `address2` varchar(120) NOT NULL,
     `city` varchar(60) NOT NULL,

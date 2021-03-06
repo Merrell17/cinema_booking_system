@@ -289,11 +289,14 @@ def deletions():
             cur.execute("""SELECT title FROM movie WHERE id=(%s)""", (movie_id,))
             title = cur.fetchone()[0]
             movie_file = str(title) + '.jpg'
-            imgs_path = "bookingsystem/static/imgs/"
-            if not os.path.exists(imgs_path + movie_file):
-                flash(imgs_path + movie_file + "doesnt exist")
+            root_folder = os.path.dirname(os.path.abspath(__file__))
+            images = os.path.join('static', 'imgs')
+            imgs_path = os.path.join(root_folder, images)
+            img_location = os.path.join(imgs_path, movie_file)
+            if not os.path.exists(img_location):
+                flash(imgs_path + movie_file + " doesnt exist")
             else:
-                os.remove(imgs_path + movie_file)
+                os.remove(img_location)
 
             # Save necessary data for user before film and related cascades are deleted
             cur.execute(""" INSERT INTO booking_data
