@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <title>Select Cinema</title>
+    <style>
+
+        .film-image{}
+
+        .film-image:hover{
+            opacity: 0.7;
+            transition: opacity .3s ease-in-out;
+            -moz-transition: opacity .3s ease-in-out;
+            -webkit-transition: opacity .3s ease-in-out;
+        }
+    </style>
    {% endblock %}
 
 {% block body %}
@@ -50,9 +61,16 @@
     <h1>What's On?</h1>
     {% for title in film_titles %}
         <a href="{{ url_for('booking.film_info', film=title[0], film_id=title[1])}}">
-         <img src="../static/imgs/{{ title[0] }}.jpg" alt="..."  style="width: 200px;height:300px;">
+         <img class="film-image" src="../static/imgs/{{ title[0] }}.jpg" alt="Image not found"  style="width: 200px;height:300px;"  onerror="this.onerror=null;this.src='../static/imgs/Tom and Jerry.jpg';">
         </a>
     {% endfor %}
+
+    {% if film_titles|length < 8 %}
+        {% set count = 8 - film_titles|length %}
+        {% for i in range(count) %}
+            <img src="../static/imgs/coming soon.jpg" alt="Image not found"  style="width: 200px;height:300px;">
+        {% endfor %}
+    {% endif %}
 
 
 </div>

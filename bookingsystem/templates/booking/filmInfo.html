@@ -23,19 +23,8 @@
      <h3 style="padding-top: 20px;">Showing At:</h3>
 
     {%for a,b in filmTimes%}
-        <div style="background: lightgrey">
-        <h1>{{a}}</h1>
+<h3> <a href = {{ url_for('booking.cinema_times', name=a, week=0)}}>{{a}}</a> </h3>
 
-
-        {%for each, id in b %}
-            <ul>
-                <li>
-                    <a href = {{ url_for('booking.seat_select', screening=id) }}>{{ each }}</a>
-                </li>
-            </ul>
-             {%endfor%}
-        </div>
-      <br>
     {%endfor%}
 
 {% endblock %}

@@ -19,7 +19,7 @@ def add_cinema():
     # Get form details
     if request.method == "POST":
         address_details = request.form
-        cinema_name = address_details['name']
+        cinema_name = address_details['name'].title()
         address1 = address_details['address1']
         address2 = address_details['address2']
         city = address_details['city']
@@ -50,7 +50,7 @@ def add_cinema():
             db.connection.commit()
             cur.close()
 
-            flash("Success")
+            flash("Successfully Created Cinema")
         else:
             flash(error)
 
@@ -122,8 +122,11 @@ def add_film():
         imbd_film = None
         error = None
         if imbd_id != '':
-            ia = imdb.IMDb()
+            # Remove 'tt' that some users leave present
 
+            imbd_id = ''.join([i for i in imbd_id if not i.isalpha()])
+            ia = imdb.IMDb()
+            print(imbd_id)
             try:
                 imbd_film = ia.get_movie(imbd_id)
                 title = imbd_film['title']
@@ -134,6 +137,7 @@ def add_film():
                 description = imbd_film['plot outline']
                 director = ' '.join(directors)
             except imdb._exceptions.IMDbParserError:
+                title = ''
                 imbd_film = None
                 pass
 
@@ -145,7 +149,7 @@ def add_film():
             duration = film_details['duration']
 
         if imbd_id != '' and not imbd_film:
-            error = 'Invalid IMDb ID, enter details manually or try again'
+            error = 'Invalid IMDb ID, enter details manually or try again.'
         elif not title:
             error = 'Valid title is required.'
         elif not duration or not duration.isdigit():
@@ -165,11 +169,13 @@ def add_film():
 
             # Testing purposes
             try:
-
+                # Ensure user uploaded a movie
                 image = request.files['movie_image']
-                image_name = title + ".jpg"
-                print(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
-                image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+                if image.filename != '':
+                    image_name = title + ".jpg"
+                    print(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+                    image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
+
             except:
                 pass
             flash('Successfully added film ' + title)

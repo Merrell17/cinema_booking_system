@@ -62,11 +62,12 @@ def film_info(film):
         else:
             times[t[0]].append((t[1].strftime('%Y-%m-%d::%H-%M'), t[2]))
 
-    return render_template('booking/filmInfo.html', title=film, details=details, filmTimes=times.items())
+    return render_template('booking/filmInfo.html', title=film, details=details, filmTimes=times.items(),)
 
 
 @bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
-def cinema_times(name, week):
+def cinema_times(name, week=0):
+    name = name.title()
     week = int(week)
     cur = db.connection.cursor()
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
@@ -74,9 +75,10 @@ def cinema_times(name, week):
                     JOIN auditorium A ON S.auditorium_id = A.id
                     JOIN cinema C ON A.Cinema_id = C.id
                     WHERE C.name = (%s) AND S.Screening_Start > NOW()
-                    ORDER BY M.title, S.Screening_Start""", (session['cinema_name'],))
+                    ORDER BY M.title, S.Screening_Start""", (name,))
 
     film_times = cur.fetchall()
+
     # Create dictionary with keys being film titles and corresponding list of screening time values
     times = {}
     for t in film_times:
@@ -92,7 +94,7 @@ def cinema_times(name, week):
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
 
-    return render_template('cinemabase.html', cinemaName=session['cinema_name'],
+    return render_template('cinemabase.html', cinemaName=name,
                            filmTimes=times.items(), weekDays=days, weekCount=week)
 
 
