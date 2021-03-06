@@ -80,7 +80,7 @@ def cinema_times(name, week=0):
 
     cur = db.connection.cursor()
 
-    cur.execute("""SELECT * FROM CINEMA WHERE `name` = (%s)""", (name, ))
+    cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (name, ))
     check_cinema_exists = cur.fetchone()
     if check_cinema_exists is None:
         abort(404)
