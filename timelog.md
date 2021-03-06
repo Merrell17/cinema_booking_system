@@ -279,3 +279,14 @@ Screen time page now works as expected. Editted create screening page to order s
 * *1 hours* Looked in to usability testing and the possible pros and cons of each method. Google form with link to website and tasks to perform seems most appopriate. 
 * *1.5 hours* Fixed small issues with urls, sidebar being overlapped by form entries and website errors when entering certain urls e.g for a reservation that doesn't exist. 
 
+##  3 March 2021
+* *1 hours* Improved spanning of nav bar on smaller windows 
+* * *3 hours* Fixed screening dates overflowing when too many were added to one day. Added the ability to press next and previous week for the same page. 
+
+##  4 March 2021
+* *5 hours* Added animation to film images on hovering. Added a 'coming soon' image to fill white space when site is empty. Made images on film times page clickable. Added handling of IDBd's that closely resemble correct format. Corrected seat number shown by confirmation page.
+
+
+##  6 March 2021
+* *10 hours* Completed Google usablity form. Spent rest of the day preparing site for usability test - improving site styling on mobile, allowing users to add films without images. Added links to cinemas which were screenings a given film from that film's page. Errors with pythonanywhere database not matching localhost's schema, updated .sql file and fixed database. Fixed bug with bad logic in session variables causing wrong cinema to be displayed. Fixed bug with pythonanywhere not displaying images properly.  Fixed bug with pythonanywhere not deleting images properly. Fixed payment form being squashed on mobile devices. Attempted to fix bug with safari not allowing html5 datetime input form - couldn't fix, admins cant create screenings on iphones. Fixed issue caused by cinemas with spaces in name. 
+
