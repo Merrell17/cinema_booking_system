@@ -72,7 +72,7 @@ def cinema_times(name, week=0):
     if session['cinema_url'] != name:
         abort(404)
 
-    name = name.title()
+    name = session['cinema_url'].title()
     # Make sure digit is entered and not too large for int conversion
     if week.isdigit() and len(week) < 4:
         week = int(week)
@@ -118,7 +118,7 @@ def cinema_times(name, week=0):
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
 
-    return render_template('cinemabase.html', cinemaName=name,
+    return render_template('cinemabase.html', cinemaName=session['cinema_name'],
                            filmTimes=times.items(), weekDays=days, weekCount=week)
 
 
