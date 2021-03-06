@@ -23,7 +23,7 @@ def create_app(test_config=None):
 
     # Pythonanywhere dbname = 'Merrell17$flaskbooking'
     # Local dbname: = 'flaskapp'
-    app.config['MYSQL_DB'] = 'Merrell17$flaskbooking'
+    app.config['MYSQL_DB'] = 'Merrell17$test'
 
     # AWS host: 'awsflaskbooking.cicsvmdk9o8l.eu-west-2.rds.amazonaws.com'
     # Pythonanywhere host: 'Merrell17.mysql.pythonanywhere-services.com'
