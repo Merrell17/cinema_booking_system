@@ -72,7 +72,7 @@ def cinema_times(name, week=0):
     # Make sure digit is entered and not too large for int conversion
     if week.isdigit() and len(week) < 4:
         week = int(week)
-        # Prevent users going unnecessarily distant and ambiguous dates
+        # Prevent users going unnecessarily distant and ambiguous dates/year occur past this point
         if week > 51:
             return redirect(url_for('booking.cinema_times', name=name, week=51))
     else:
@@ -82,7 +82,11 @@ def cinema_times(name, week=0):
 
     cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (name, ))
     check_cinema_exists = cur.fetchone()
+
+    # Bad URL entry or possible cinema in session was deleted so we remove it
     if check_cinema_exists is None:
+        session['cinema_name'] = None
+        session['cinema_url'] = None
         abort(404)
 
     cur.execute("""SELECT M.title, S.Screening_Start, S.id 
