@@ -296,3 +296,18 @@ Screen time page now works as expected. Editted create screening page to order s
 
 ##  9 March 2021
 * *4 hours* Dissertation Work
+
+##  10 March 2021
+* *8 hours* Dissertation Work
+
+##  11 March 2021
+* *8 hours* Dissertation Work
+
+##  12 March 2021
+* *8 hours* Dissertation Work
+
+##  13 March 2021
+* *4 hours* Dissertation Work
+
+##  14 March 2021
+* *3.5 hours* Wrote tests for the booking section
