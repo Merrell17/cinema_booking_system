@@ -311,3 +311,11 @@ Screen time page now works as expected. Editted create screening page to order s
 
 ##  14 March 2021
 * *3.5 hours* Wrote tests for the booking section
+
+##  21 March 2021
+* *3.5 hours* Editted Seat map page 
+* * *1 hours* Polished some code and made various minor changes from usability feedback
+
+
+##  22 March 2021
+* *3.5 hours* Wrote tests and improved parts of dissertation. Started writing evaluation. 
