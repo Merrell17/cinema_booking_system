@@ -288,5 +288,34 @@ Screen time page now works as expected. Editted create screening page to order s
 
 
 ##  6 March 2021
-* *10 hours* Completed Google usablity form. Spent rest of the day preparing site for usability test - improving site styling on mobile, allowing users to add films without images. Added links to cinemas which were screenings a given film from that film's page. Errors with pythonanywhere database not matching localhost's schema, updated .sql file and fixed database. Fixed bug with bad logic in session variables causing wrong cinema to be displayed. Fixed bug with pythonanywhere not displaying images properly.  Fixed bug with pythonanywhere not deleting images properly. Fixed payment form being squashed on mobile devices. Attempted to fix bug with safari not allowing html5 datetime input form - couldn't fix, admins cant create screenings on iphones. Fixed issue caused by cinemas with spaces in name. 
+* *10 hours* Editted Google usablity form. Spent rest of the day preparing site for usability test - improving site styling on mobile, allowing users to add films without images. Added links to cinemas which were screenings a given film from that film's page. Errors with pythonanywhere database not matching localhost's schema, updated .sql file and fixed database. Fixed bug with bad logic in session variables causing wrong cinema to be displayed. Fixed bug with pythonanywhere not displaying images properly.  Fixed bug with pythonanywhere not deleting images properly. Fixed payment form being squashed on mobile devices. Attempted to fix bug with safari not allowing html5 datetime input form - couldn't fix, admins cant create screenings on iphones. Fixed issue caused by cinemas with spaces in name. 
 
+##  8 March 2021
+* *2.5 hours* Completed Usability form
+* *2.5 hours* Dissertation Work
+
+##  9 March 2021
+* *4 hours* Dissertation Work
+
+##  10 March 2021
+* *8 hours* Dissertation Work
+
+##  11 March 2021
+* *8 hours* Dissertation Work
+
+##  12 March 2021
+* *8 hours* Dissertation Work
+
+##  13 March 2021
+* *4 hours* Dissertation Work
+
+##  14 March 2021
+* *3.5 hours* Wrote tests for the booking section
+
+##  21 March 2021
+* *3.5 hours* Editted Seat map page 
+* * *1 hours* Polished some code and made various minor changes from usability feedback
+
+
+##  22 March 2021
+* *3.5 hours* Wrote tests and improved parts of dissertation. Started writing evaluation. 
