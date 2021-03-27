@@ -48,7 +48,7 @@
 <table style="width:100%" id="pricing">
 <tr>
 <td class="left">Ticket Price</td>
-<td class="right">£9.60</td>
+<td class="right">£9.00</td>
 </tr>
 <tr>
 <td class="left">Ticket Quantity</td>
@@ -61,41 +61,31 @@
 </table>
 </div>
 
-<div id="payment form">
+<div id="payment-form">
 <form method="POST" class="signup" autocomplete="off" action="">
-    <div class="signup__field">
-    <input class="signup__input" type="text" name="card_number" id="card_number" required />
-    <label class="signup__label" for="card_number">Card Number</label>
+    <div class="standard-field">
+    <input class="standard-input" type="text" name="card_number" id="card_number" required />
+    <label class="standard-label" for="card_number">Card Number</label>
   </div>
 
-  <div class="signup__field">
-    <input class="signup__input" type="text" name="expiration" id="expiration" required />
-    <label class="signup__label" for="expiration">Name on Card</label>
+  <div class="standard-field">
+    <input class="standard-input" type="text" name="expiration" id="expiration" required />
+    <label class="standard-label" for="expiration">Name on Card</label>
   </div>
 
 
-    <div class="signup__field">
-    <input class="signup__input" type="text" name="fname" id="fname" required />
-    <label class="signup__label" for="fname">MM/YY</label>
+    <div class="standard-field">
+    <input class="standard-input" type="text" name="fname" id="fname" required />
+    <label class="standard-label" for="fname">MM/YY</label>
   </div>
-    <div class="signup__field">
-    <input class="signup__input" type="text" name="lname" id="lname" required />
-    <label class="signup__label" for="lname">CVC</label>
+    <div class="standard-field">
+    <input class="standard-input" type="text" name="lname" id="lname" required />
+    <label class="standard-label" for="lname">CVC</label>
   </div>
 
   <button type="submit">Book Tickets</button>
 </form>
 </div>
-<!--
-<div id="booking_summary">
-    <h1>Confirm Booking</h1>
-    <ul>
-    #{% for seat in seats%}
-        seat {{ seat }}
-    </ul>
-    #{% endfor %}
-</div>
--->
 
 
 

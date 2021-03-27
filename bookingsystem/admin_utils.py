@@ -77,18 +77,20 @@ def add_screen():
         error = None
 
         if not screen_name:
-            error = 'screen name is required.'
+            error = 'Screen name is required.'
         elif not cinema_name:
-            error = 'cinema_name is required'
+            error = 'Cinema name is required'
         elif not column_count or not column_count.isdigit():
             error = 'Invalid number of columns'
         elif not row_count or not column_count.isdigit():
             error = 'Invalid number of rows'
+        elif not screen_name.isdigit():
+            error = 'Invalid screen number'
 
         cur.execute("""SELECT screen_name 
                         FROM auditorium
                         WHERE cinema_id = (%s)
-                        AND screen_name = (%s)""", ((cinema_name), (screen_name)))
+                        AND screen_name = (%s)""", (cinema_name, screen_name))
         if cur.fetchone() is not None:
             error = 'There is already a screen number {} for this cinema'.format(screen_name)
 
@@ -123,7 +125,6 @@ def add_film():
         error = None
         if imbd_id != '':
             # Remove 'tt' that some users leave present
-
             imbd_id = ''.join([i for i in imbd_id if not i.isalpha()])
             ia = imdb.IMDb()
             print(imbd_id)
@@ -184,6 +185,9 @@ def add_film():
 
     return render_template('adminutils/addFilm.html')
 
+def process_imdb_id(id):
+    pass
+
 
 @bp_admin.route('createscreening', methods=['GET', 'POST'])
 @admin_required
@@ -213,32 +217,29 @@ def create_screening():
             flash("Enter a valid start time")
             return redirect(url_for('admin_utils.create_screening'))
 
-
         # Get selected film's duration
         cur.execute("""SELECT duration_min FROM movie WHERE id=(%s)""", (film_id,))
         duration = cur.fetchone()[0]
-
 
         # Make start time a datetime object and add film duration minutes to get end time
         start = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M")
         end_time = start + datetime.timedelta(minutes=duration)
         end_time = end_time.strftime("%Y-%m-%dT%H:%M")
 
-
         # Check that there's no timing clashes before insertion
         cur.execute("""SELECT M.title, S.screening_start, S.end_time
                         FROM movie M JOIN screening S ON M.id = S.movie_id
                         WHERE S.auditorium_id=(%s) 
                         AND (%s) > S.screening_start AND (%s) < S.end_time """, (screen_id, end_time, start_time))
-
+        # If the cursor has retrieved any data from the query then a clashing error has occurred
         clash = cur.fetchone()
         if clash is not None:
-            flash('Clashing error: ' + str(clash[0]) + ' is showing on this screen between \n' + clash[1].strftime('%H:%M') + ' and '
-                  + clash[2].strftime('%H:%M'))
-
+            flash('Clashing error: {} is showing on this screen between {} and {}'
+                  .format(clash[0], clash[1].strftime('%H:%M'), clash[2].strftime('%H:%M')))
+        # Create the screening if there's no clash
         else:
             cur.execute("INSERT INTO screening(movie_id, auditorium_id, screening_start, end_time) "
-                    "VALUES(%s, %s, %s, %s)", (film_id, screen_id, start_time, end_time))
+                        "VALUES(%s, %s, %s, %s)", (film_id, screen_id, start_time, end_time))
             db.connection.commit()
             cur.close()
             flash('Screening created!')

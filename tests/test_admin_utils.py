@@ -154,4 +154,6 @@ def test_delete_film(client, auth, app):
         deleted_film = cur.fetchone()
         assert deleted_film is None
         cur.execute("""DELETE FROM movie WHERE title='Back to the Future' """)
+        db.connection.commit()
+        cur.close()
     auth.logout()

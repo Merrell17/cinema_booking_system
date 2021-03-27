@@ -63,6 +63,7 @@ def film_info(film):
     return render_template('booking/filmInfo.html', title=film, details=details, filmTimes=times.items(),)
 
 
+# REFACTOR TO ONLY FIND SCREENINGS WITH IN THE WEEK?
 # Returns 7 days of cinema times with a week delta
 @bp_booking.route('/cinema/<name>/<week>', methods=["GET", "POST"])
 def cinema_times(name, week=0):
@@ -81,7 +82,7 @@ def cinema_times(name, week=0):
     cur.execute("""SELECT * FROM cinema WHERE `name` = (%s)""", (name, ))
     check_cinema_exists = cur.fetchone()
 
-    # Bad URL entry or possible cinema in session was deleted so we remove it
+    # Bad URL entry
     if check_cinema_exists is None:
         abort(404)
 
@@ -112,7 +113,7 @@ def cinema_times(name, week=0):
 
     return render_template('cinemabase.html', cinemaName=name.title(),
                            filmTimes=times.items(), weekDays=days, weekCount=week,
-                           cinemaURL=name)
+                           cinemaURL=name, )
 
 
 @bp_booking.route('/<screening>', methods=["GET", "POST"])
@@ -193,7 +194,7 @@ def process_ticket(screening, auditorium):
     date = datetime.strftime('%d %B')
     # Remove seconds
     time = datetime.strftime('%X')[:-3]
-    total = format(len(session['seats']) * 9.60, '.2f')
+    total = format(len(session['seats']) * 9.00, '.2f')
     # Get name
     cur.execute("""SELECT first_name, last_name 
                     FROM `user` 
@@ -360,6 +361,11 @@ def edit_details():
         cur = db.connection.cursor()
         error = None
 
+        cur.execute("""SELECT * FROM user WHERE username=(%s)""", (username,))
+        clashing_usernames = cur.fetchone()
+
+        if clashing_usernames is not None:
+            error = 'This username is taken'
         if not username:
             error = 'Username is required'
         elif not email:
@@ -410,3 +416,6 @@ def change_password():
         flash(error)
 
     return render_template('booking/changePassword.html')
+
+
+

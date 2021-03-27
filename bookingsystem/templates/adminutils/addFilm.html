@@ -40,31 +40,31 @@
         <br>
 
     <h3>Use IMDb ID </h3>
-        <div class="signup__field">
-    <input class="signup__input" type="text" name="imdb_id" id="username" />
-    <label class="signup__label" for="imdb_id">IMDb ID</label>
+        <div class="standard-field">
+    <input class="standard-input" type="text" name="imdb_id" id="username" />
+    <label class="standard-label" for="imdb_id">IMDb ID (www.imdb.com/title/tt*id*/)</label>
   </div>
         <h1 >OR</h1>
 
         <h3>Enter Manually</h3>
-  <div class="signup__field">
-    <input class="signup__input" type="text" name="title" id="username" />
-    <label class="signup__label" for="title">Film Title</label>
+  <div class="standard-field">
+    <input class="standard-input" type="text" name="title" id="username" />
+    <label class="standard-label" for="title">Film Title</label>
   </div>
 
-        <div class="signup__field">
-    <input class="signup__input" type="text" name="director" id="username"  />
-    <label class="signup__label" for="director">Director</label>
+        <div class="standard-field">
+    <input class="standard-input" type="text" name="director" id="username"  />
+    <label class="standard-label" for="director">Director</label>
   </div>
 
-        <div class="signup__field">
-    <input class="signup__input" type="text" name="description" id="username"/>
-    <label class="signup__label" for="description">Description</label>
+        <div class="standard-field">
+    <input class="standard-input" type="text" name="description" id="username"/>
+    <label class="standard-label" for="description">Description</label>
   </div>
 
-          <div class="signup__field">
-    <input class="signup__input" type="text" name="duration" id="username" />
-    <label class="signup__label" for="duration">Duration</label>
+          <div class="standard-field">
+    <input class="standard-input" type="text" name="duration" id="username" />
+    <label class="standard-label" for="duration">Duration (Minutes)</label>
    </div>
 
 
@@ -77,6 +77,13 @@
 
 </body>
 {% endblock %}
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!--
 <p class="formfield">
 <h1>Add a Film</h1>

@@ -18,9 +18,9 @@
 
 <div id="week-counter">
 {% if weekCount > 0 %}
-<a id='previous' href= {{ url_for('booking.cinema_times', name=session['cinema_name'], week=weekCount-1 ) }}> Previous Week </a>
+<a id='previous' href= {{ url_for('booking.cinema_times', name=cinemaURL, week=weekCount-1 ) }}> Previous Week </a>
 {% endif %}
-<a id='next' href= {{ url_for('booking.cinema_times', name=session['cinema_name'], week=weekCount+1 ) }}> Next Week </a>
+<a id='next' href= {{ url_for('booking.cinema_times', name=cinemaURL, week=weekCount+1 ) }}> Next Week </a>
 </div>
 
 

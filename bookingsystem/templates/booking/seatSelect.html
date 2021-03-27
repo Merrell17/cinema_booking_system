@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Select Seats</title>
 
@@ -17,23 +18,22 @@
 </head>
 {% block body %}
 <body>
-
 <h1>{{ title }} - {{ time }}</h1>
+<div class="seating_key">
+<div><div class='box white'></div>Available</div>
+
+<div><div class='box green'></div>Selected</div>
+
+<div><div class='box grey'></div>Unavailable</div>
+</div>
+<div class="seat-map-container">
+
+
 <div id="container">
-</div>
-
-<div id = "right">
-<p id= "quantity">
- Select your seats!
- </p>
-
-    <form method="POST" action="">
-    <input type="hidden" id="hidden" name="hidden-ticket-value">
-
-    <input type="submit" value="Book" id="book-btn">
-    </form>
 
 </div>
+
+
 
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -63,12 +63,14 @@ $('.seat').click((e) => {
 		e.currentTarget.classList.toggle('selected');
 
     quantity = (document.getElementsByClassName("selected").length);
-
+    document.getElementById('ticket-count').innerHTML = quantity
+    document.getElementById("total_value").innerHTML="£"+9.00*quantity +".00"
     document.getElementById("quantity").innerHTML = quantity + " Ticket(s)"
     document.getElementById("book-btn").style.display = "inline-block"
     if (quantity==0){
     	document.getElementById("quantity").innerHTML = "Select your seats!"
     	document.getElementById("book-btn").style.display = "none"
+        document.getElementById("total_value").innerHTML="£0.00"
     }
     var all = $(".selected").map(function() {
     return this.num;
@@ -95,7 +97,70 @@ $('#book-btn').click((e) => {
 
 
 })
-
 </script>
 
+<div class="seat-map-confirm-booking">
+<h1>Confirm Booking</h1>
+
+<table style="width:100%" id="main_info">
+
+<tr>
+<td class="left">Name</td>
+<td class="right">Hugh Merrell</td>
+</tr>
+<tr>
+<td class="left" >Film</td>
+<td class="right">{{ title }}</td>
+</tr>
+<tr>
+<td class="left">Cinema</td>
+<td class="right">{{ session['cinema_name'] }}</td>
+</tr>
+
+</table>
+
+<table style="width:100%" id="timings">
+<tr>
+<td class="left">Date</td>
+<td class="right">{{ time }}</td>
+</tr>
+
+
+</table>
+
+
+<table style="width:100%" id="pricing">
+<tr>
+<td class="left">Ticket Price</td>
+<td class="right">£9.00</td>
+</tr>
+<tr>
+<td class="left">Ticket Quantity</td>
+<td class="right" id="ticket-count">0</td>
+</tr>
+<tr>
+<td id="total">Total</td>
+<td id="total_value">£0.00</td>
+</tr>
+</table>
+
+    <div id = "right">
+<p id= "quantity">
+ Select your seats!
+ </p>
+
+    <form method="POST" action="">
+    <input type="hidden" id="hidden" name="hidden-ticket-value">
+
+        <button type="submit" value="Book" id="book-btn">To Confirmation</button>
+    </form>
+
+</div>
+
+</div>
+</div>
+
+
+
+</html>
 {%  endblock %}
