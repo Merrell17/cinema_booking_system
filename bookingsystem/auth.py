@@ -6,6 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import re
 from flask_mysqldb import MySQL
 from bookingsystem.extensions import db
+import random
+import string
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -139,3 +141,36 @@ def admin_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+# A view to generate admin accounts for marking purposes
+@bp_auth.route('/createadmin', methods=('GET', 'POST'))
+def create_admin():
+
+    letters = string.ascii_lowercase
+    usern = (''.join(random.choice(letters) for i in range(5)))
+    passw = (''.join(random.choice(letters) for i in range(3)))
+    email = usern + '@mail.com'
+
+    cur = db.connection.cursor()
+    cur.execute('SELECT id FROM user WHERE username = (%s)', (usern,))
+
+    error = None
+    if cur.fetchone() is not None:
+        error = 'User {} is already registered.'.format(usern)
+
+    cur.execute('SELECT email FROM user WHERE email = (%s)', (email,))
+    if cur.fetchone() is not None:
+        error = 'Email {} is already taken.'.format(email)
+
+    if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
+        error = 'Email entered is not of a valid format'
+
+    if error is None:
+        cur.execute(
+            "INSERT INTO user(username, password, email, first_name, last_name, is_admin)"
+            "VALUES (%s, %s, %s, %s, %s, %s)",
+            (usern, generate_password_hash(passw), email, 'John', 'Doe', 1))
+        db.connection.commit()
+
+    return render_template('auth/generateAdmin.html', usern = usern, passw=passw, email=email)

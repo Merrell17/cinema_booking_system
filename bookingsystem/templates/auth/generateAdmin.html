@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Admin Account Created</h2>
+    Not convinced of PythonAnywhere's database stability, don't recommend spamming refresh<br><br>
+
+    Your admin login details:<br><br>
+
+    username: <b>{{usern}}</b> <br>
+    password: <b>{{passw}}</b> <br><br>
+
+    <a href="{{ url_for('auth.login') }}" target="_blank">Click here to open login page in new tab</a>
+    <br><br>
+
+    Once logged in you can edit the your username and password under
+    the "My Account" tab to something preferable. You will need to
+    use the password given here in order to change it.
+</body>
+</html>
