@@ -5,7 +5,7 @@ import os
 import imdb
 import datetime
 from bookingsystem.extensions import db
-
+import string
 from bookingsystem.auth import admin_required
 
 bp_admin = Blueprint('admin_utils', __name__, url_prefix='/adminutils', template_folder='templates/adminutils')
@@ -32,6 +32,12 @@ def add_cinema():
         error = None
         if not cinema_name:
             error = 'title is required.'
+
+        else:
+            # Remove unwanted punctuation
+            exclude = set(string.punctuation)
+            exclude.remove("'")
+            cinema_name = ''.join(ch for ch in cinema_name if ch not in exclude)
 
         cur.execute('SELECT `name` FROM cinema WHERE name = (%s)', (cinema_name,))
         if cur.fetchone() is not None:
@@ -160,6 +166,10 @@ def add_film():
             error = 'Valid title is required.'
         elif not duration or not duration.isdigit():
             error = 'Valid duration is required'
+        else:
+            exclude = set(string.punctuation)
+            exclude.remove("'")
+            title = ''.join(ch for ch in title if ch not in exclude)
 
         cur.execute('SELECT title FROM movie WHERE title = (%s)', (title,))
         if cur.fetchone() is not None:
@@ -181,7 +191,6 @@ def add_film():
                     image_name = title + ".jpg"
                     print(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
                     image.save(os.path.join(current_app.config["IMAGE_UPLOADS"], image_name))
-
             except:
                 pass
             flash('Successfully added film ' + title)
