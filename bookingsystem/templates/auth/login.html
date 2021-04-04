@@ -24,6 +24,11 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+        <script>
+                document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.remove();
+                });
+            </script>
         {% endfor %}
     {% endif %}
 {% endwith %}

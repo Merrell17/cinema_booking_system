@@ -3,7 +3,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
+import re
 from flask_mysqldb import MySQL
 from bookingsystem.extensions import db
 
@@ -37,7 +37,10 @@ def register():
 
         cur.execute('SELECT email FROM user WHERE email = (%s)', (email,))
         if cur.fetchone() is not None:
-            error = 'Email {} is already taken.'.format(username)
+            error = 'Email {} is already taken.'.format(email)
+
+        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
+            error = 'Email entered is not of a valid format'
 
         if error is None:
 

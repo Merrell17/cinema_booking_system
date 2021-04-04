@@ -28,6 +28,11 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <script>
+                document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.remove();
+                });
+            </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
@@ -37,37 +42,37 @@
 
 
   <div class="standard-field">
-    <input class="standard-input" type="text" name="name" id="username" required />
+    <input class="standard-input" type="text" maxlength="24" name="name" required />
     <label class="standard-label" for="name">Name</label>
   </div>
 
 
 
   <div class="standard-field">
-    <input class="standard-input" type="text" name="address1" id="username" required />
+    <input class="standard-input" type="text" name="address1"  required />
     <label class="standard-label" for="address1">Address Line 1</label>
   </div>
 
         <div class="standard-field">
-    <input class="standard-input" type="text" name="address2" id="username" required />
+    <input class="standard-input" type="text" name="address2" required />
     <label class="standard-label" for="address2">Address Line 2</label>
   </div>
 
         <div class="standard-field">
-    <input class="standard-input" type="text" name="city" id="username" required />
+    <input class="standard-input" type="text" name="city" required />
     <label class="standard-label" for="city">City</label>
   </div>
 
           <div class="standard-field">
-    <input class="standard-input" type="text" name="county" id="username" required />
+    <input class="standard-input" type="text" name="county" required />
     <label class="standard-label" for="county">County</label>
   </div>
 
 
 
         <div class="standard-field">
-    <input class="standard-input" type="text" name="postcode" id="username" required />
-    <label class="standard-label" for="postcode">postcode</label>
+    <input class="standard-input" type="text" name="postcode" required />
+    <label class="standard-label" for="postcode">Postcode</label>
   </div>
 
 

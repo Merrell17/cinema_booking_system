@@ -1,16 +1,18 @@
-const navSlide = () => {
+// Nav bar slide out
+const slide_out = () => {
+    const site_link = document.querySelectorAll('.site-link li')
+    const nav = document.querySelector('.site-link')
     const burger = document.querySelector('.burger');
-    const nav = document.querySelector('.nav-links')
-    const navLinks = document.querySelectorAll('.nav-links li')
 
     burger.addEventListener('click', ()=> {
-        nav.classList.toggle('nav-active');
+        nav.classList.toggle('slide-nav');
+
+
     });
 
-    navLinks.forEach((link, index) => {
-        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7}s`;
-        console.log(index / 7);
+     site_link.forEach((nav_link, i) => {
+        nav_link.style.animation = `nav-links-slide 0.5s ease forwards ${i/ 8}s`;
+
     });
 }
-
-navSlide();
+slide_out();

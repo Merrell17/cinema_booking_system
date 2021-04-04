@@ -28,6 +28,11 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <script>
+                document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.remove();
+                });
+            </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
@@ -41,29 +46,29 @@
 
     <h3>Use IMDb ID </h3>
         <div class="standard-field">
-    <input class="standard-input" type="text" name="imdb_id" id="username" />
+    <input class="standard-input" type="text" name="imdb_id" />
     <label class="standard-label" for="imdb_id">IMDb ID (www.imdb.com/title/tt*id*/)</label>
   </div>
         <h1 >OR</h1>
 
         <h3>Enter Manually</h3>
   <div class="standard-field">
-    <input class="standard-input" type="text" name="title" id="username" />
+    <input class="standard-input" type="text" maxlength="50" name="title" />
     <label class="standard-label" for="title">Film Title</label>
   </div>
 
         <div class="standard-field">
-    <input class="standard-input" type="text" name="director" id="username"  />
+    <input class="standard-input" type="text" maxlength="24" name="director" />
     <label class="standard-label" for="director">Director</label>
   </div>
 
         <div class="standard-field">
-    <input class="standard-input" type="text" name="description" id="username"/>
+    <input class="standard-input" type="text" name="description" />
     <label class="standard-label" for="description">Description</label>
   </div>
 
           <div class="standard-field">
-    <input class="standard-input" type="text" name="duration" id="username" />
+    <input class="standard-input" type="number" name="duration" />
     <label class="standard-label" for="duration">Duration (Minutes)</label>
    </div>
 

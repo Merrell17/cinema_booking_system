@@ -32,6 +32,11 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+        <script>
+                document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.remove();
+                });
+            </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
@@ -43,7 +48,7 @@
 
 
     <div id="selectdropdown">
-    <form method="POST" action="">
+    <form class = "select-cinema-form" method="POST" action="">
 
         <select name="cinemas" id="cinemas">
         <option value="" selected disabled hidden>Choose a Cinema</option>
@@ -52,12 +57,12 @@
         {% endfor %}
         </select>
         <br>
-        <input type="submit">
+        <button type="submit">Find Tickets</button>
     </form>
     </div>
     </div>
 
-<div class="container" style="margin:auto; max-width: 950px">
+<div class="text-center" style="margin:auto; max-width: 950px">
     <div class="all-film-images">
     <h1>What's On?</h1>
     {% for title in film_titles %}

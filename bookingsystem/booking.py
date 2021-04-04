@@ -1,7 +1,7 @@
 import werkzeug
 from flask import Flask, render_template, request, url_for, Blueprint, flash, session, redirect, current_app, abort
 from bookingsystem.extensions import db
-import json
+import re
 import datetime
 from bookingsystem.auth import login_required
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -254,7 +254,7 @@ def confirmed(user, reservation):
     cur.execute("""SELECT S.number
                     FROM seat S JOIN seat_reserved SR ON SR.seat_id=S.id
                     WHERE SR.reservation_id=(%s)""", (reservation,))
-    seats = [x[0] for x in cur.fetchall()]
+    seats = [seat[0] for seat in cur.fetchall()]
 
     cur.execute("""SELECT first_name, last_name
                     FROM `user` 
@@ -352,7 +352,8 @@ def edit_details():
                         FROM user
                         WHERE id=(%s)""", (session['user_id'],))
     user_details = cur.fetchone()
-
+    current_username = user_details[1]
+    current_email = user_details[3]
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -361,17 +362,28 @@ def edit_details():
         cur = db.connection.cursor()
         error = None
 
-        cur.execute("""SELECT * FROM user WHERE username=(%s)""", (username,))
-        clashing_usernames = cur.fetchone()
+        if username != current_username:
+            cur.execute("""SELECT * FROM user WHERE username=(%s)""", (username,))
+            clashing_usernames = cur.fetchone()
+            if clashing_usernames is not None:
+                error = 'This username is taken'
 
-        if clashing_usernames is not None:
-            error = 'This username is taken'
+        if email != current_email:
+            cur.execute("""SELECT * FROM user WHERE email=(%s)""", (email,))
+            clashing_emails = cur.fetchone()
+            if clashing_emails is not None:
+                error = 'This email is already in use'
+
         if not username:
             error = 'Username is required'
         elif not email:
             error = 'Email is required'
         elif not fname or not lname:
             error = 'Name is required'
+
+        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
+            error = 'Email entered is not of a valid format'
+
 
         if error is None:
             cur.execute("""UPDATE `user`

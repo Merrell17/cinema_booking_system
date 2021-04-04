@@ -1,4 +1,3 @@
-
 #register {
     height: 300px;
     margin: 0px 25% 100px;
@@ -9,10 +8,9 @@
 }
 
 #wrapper {
-
     margin: 0px 25% 100px;
-    padding: 50px 20px 50px;
-    background-color: rgba(62, 19, 21,0.1);
+    padding-top: 20px;
+
     height: 10vh;
 
 }
@@ -24,8 +22,9 @@
 
 }
 
-.container{
-    margin-left: 100px;
+.all-film-images{
+
+
 }
 
 #selectdropdown {
@@ -36,44 +35,21 @@
 #selectdropdown > form {
     margin-top: 5%;
 }
-/*
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-    padding: 12px 20px;
-    margin-top: 50px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
-*/
-/*
-body{
-    background-image: url("cinemabackground.jpg");
-    background-repeat: repeat;
-    background-size: cover;
-}
-
-:root {
-  --grid-cols: 1;
-  --grid-rows: 1;
-}
-*/
 #container {
+
     width: 60%;
-    max-width: 60%;
     max-height: 50%;
     display: grid;
     grid-gap: 1em;
     grid-template-rows: repeat(var(--grid-rows), 1fr);
     grid-template-columns: repeat(var(--grid-cols), 1fr);
-
+    grid-area: inherit;
 }
 
 .seat {
-  padding: 1em;
-  border: 1px solid #ddd;
+
+  border: 0.1em solid #ddd;
   text-align: center;
   cursor: pointer;
 }
@@ -83,14 +59,14 @@ body{
 }
 
 .booked {
-  padding: 1em;
-  border: 1px solid #ddd;
+
+  border: 0.1em solid #ddd;
   background-color: grey;
   cursor: not-allowed;
 }
 
 #book-btn {
-   display: none;
+   visibility: hidden;
 }
 
 label {
@@ -112,6 +88,7 @@ img {
   clear: both;
 }
 
+
 .white {
   background-color: white;
 }
@@ -130,17 +107,13 @@ img {
     justify-content: space-evenly;
 }
 
-@media screen and (max-width: 600px){
-    .seating_key{
-        flex-direction: column;
-    }
 
-}
 
 
 .seat-map-container{
-    display: flex;
 
+    display: flex;
+    max-height: 70%;
     flex-direction: row;
 }
 
@@ -148,9 +121,10 @@ img {
 .seat-map-confirm-booking{
     height: 100%;
     width: 25%;
-    margin-left: 5%;
-    margin-left: 5em;
-    margin-top: 5em
+    margin-left: 10%;
+
+    margin-top: 5em;
+    float: right;
 }
 
 .seat-map-confirm-booking h1{
@@ -217,13 +191,43 @@ input {
   outline: none;
 }
 
-@media screen and (max-width: 1050px){
+
+
+@media screen and (max-width: 1200px){
+    button:hover {
+    background: #4b111b;
+}
+    #container{
+        width: 80%;
+    }
     .seat-map-container{
         flex-direction: column;
-
+        padding-bottom: 100px;
     }
     .seat-map-confirm-booking{
         width: 60%;
     }
+    .seating_key{
+        width: 80%;
+    }
 
+}
+
+
+@media screen and (max-width: 540px){
+    .seating_key{
+        width: 100%;
+
+    }
+    .seat-map-confirm-booking{
+        width: 80%;
+    }
+
+}
+
+
+
+
+.select-cinema-form button{
+    margin-top: 5px;
 }

@@ -2,15 +2,16 @@ import pytest
 from bookingsystem.extensions import db
 
 import datetime
-# autouse functions are automatically invoked for each test function defined in
+
+global expected_cinema_id
+
+# Autouse functions are automatically invoked for each test function defined in
 # the same module. We can use it act as an admin, setting up a cinema, screen,
 # film and screening. The yield keyword is where each test in this module is run.
 # The code after yield will be run after each test. Here we can teardown what we
 # have created prior.
-
-
 @pytest.fixture(autouse=True)
-def set_up_film_screening(client, auth, app):
+def test_set_up_film_screening(client, auth, app):
     auth.login(username='admin', password='1234')
     assert client.get('/adminutils/addcinema').status_code == 200
     client.post('/adminutils/addcinema', data={'name': 'Testing Booking', 'address1': '1', 'address2': '2',
@@ -23,6 +24,8 @@ def set_up_film_screening(client, auth, app):
         # Get the inserted cinemas ID
         cur = db.connection.cursor()
         cur.execute("""SELECT MAX(id) FROM cinema""")
+        # Allow the cinema id to be used in tests
+        global expected_cinema_id
         expected_cinema_id = cur.fetchone()[0]
         cur.execute("""SELECT id FROM cinema WHERE `name`='Testing Booking' """)
         retrieved_cinema_id = cur.fetchone()[0]
@@ -64,6 +67,29 @@ def set_up_film_screening(client, auth, app):
         cur.close()
 
 
+def test_edit_details(client, app, auth):
+    auth.login(username='admin', password='1234')
+    assert client.get('booking/myaccount/editdetails').status_code == 200
+
+    response = client.get('booking/myaccount/editdetails')
+    assert b"admin" in response.data
+
+    # Change several things, e.g admin -> admin10
+    response = client.post('booking/myaccount/editdetails', data={'username': 'admin10', 'email': 'new_email@example.com',
+                                                                  'fname': 'firsttest', 'lname': 'lasttest'})
+    # Check that admin details have changed
+    with app.app_context():
+        cur = db.connection.cursor()
+        cur.execute("""SELECT * FROM user WHERE username='admin10'""")
+        admin_user_row = cur.fetchone()
+        assert admin_user_row[1] == 'admin10'
+
+    # Reset admin details
+    client.post('booking/myaccount/editdetails', data={'username': 'admin', 'email': 'new_example@gmail.com',
+                                                    'fname': 'John', 'lname': 'Doe'})
+    auth.logout()
+
+
 @pytest.mark.run(order=1)
 def test_index(client, auth):
     response = client.get('http://127.0.0.1:5000/booking/selectcinema')
@@ -77,16 +103,19 @@ def test_index(client, auth):
     assert b'Log Out' in response.data
 
 
-@pytest.mark.parametrize('path', (
-    #'/booking/myaccount',
-    '/booking/processticket/40/80/',
-))
+def test_select_cinema(client):
+    # Select the cinema we created in the test setup
+    response = client.post('http://127.0.0.1:5000/booking/selectcinema', data={'cinemas': expected_cinema_id})
+    # Check we are being redirected here
+    assert response.headers['Location'] == "http://127.0.0.1:5000/booking/cinema/Testing%20Booking/0"
+
+
 # Ensure that when trying to access a URL that requires login, we get redirected to login
-def test_login_required(client, path):
-    response = client.post(path)
+def test_login_required(client):
+    response = client.post('/booking/processticket/40/80/')
     assert response.headers['Location'] == 'http://localhost/auth/login'
 
-
+# Here we are selecting a film on the homepage, not a cinema, so look for the details we added
 def test_film_info_page(client):
     response = client.get('booking/selectcinema/TestTitle')
     # Ensure relevant Info is being displayed
@@ -100,14 +129,13 @@ def test_film_info_page(client):
 def test_cinema_home_page(client):
     # Go to cinema homepage, with the current week(0) selected
     response = client.get('booking/cinema/Testing%20Booking/0')
-    # We created a screening in 3 days time, at 15:35pm so the screening should be here
+    # We created a screening in 3 days time in setup, at 15:35pm so the screening should be here
     assert b"TestTitle" in response.data
     assert b"15:35" in response.data
 
 
 # Generally want smaller unit tests but given that there is a chain of operations required in order to make a booking
 # this test is longer. We use assert statements throughout so we can locate any issues.
-
 def test_full_booking_process(client, app, auth):
     # Get the necessary ID's for the screening created in set_up_film_screening()
     with app.app_context():
@@ -118,7 +146,9 @@ def test_full_booking_process(client, app, auth):
         film_screening = cur.fetchone()
         screening_id = film_screening[0]
         screen_id = film_screening[2]
-
+        cur.execute("""SELECT id FROM user WHERE username='admin' """)
+        account = cur.fetchone()
+        admin_id = account[0]
     # Check the select seat url exists for the created screening
     seat_map_url = 'booking/' + str(screening_id)
     assert client.get(seat_map_url).status_code == 200
@@ -139,45 +169,27 @@ def test_full_booking_process(client, app, auth):
 
     # Enter card details into the payment form, creating a booking
     process_payment_url = response.headers['Location']
-    client.post(process_payment_url, data={'expiration': '01/01', 'card_number':'0000000000000' })
+    response = client.post(process_payment_url, data={'expiration': '01/01', 'card_number': '0000000000000'})
 
-    # Check that our bookings have been created, 1 booking with 3 seats selected
+
+    # Use database cursor to check that our bookings have been created, 1 booking with 3 seats selected
     with app.app_context():
         cur = db.connection.cursor()
         cur.execute("""SELECT * FROM reservation WHERE screening_id=(%s)""", (screening_id,))
         bookings = cur.fetchall()
+        reservation_id = bookings[0][0]
         cur.execute("""SELECT * FROM seat_reserved WHERE screening_id=(%s)""", (screening_id,))
         reserved_seats = cur.fetchall()
         assert len(bookings) == 1
         assert len(reserved_seats) == 3
     # Finally we will check that the booking confirmation is present on our My Account page
+    confirmation_url = ('http://localhost/booking/confirmation/{}/{}'.format(admin_id, reservation_id))
+    assert client.get(confirmation_url).status_code == 200
     response = client.get('booking/myaccount')
     assert b"TestTitle:" in response.data
 
 
-
-def edit_details(client, app, auth):
-    auth.login(username='admin', password='1234')
-    response = client.post('booking/myaccount/editdetails', data={'username': 'admin1', 'email':'new_email@example.com',
-                                                                  'fname': 'firsttest', 'lname':'lasttest'})
-
-    # Check that admin details have changed
-    with app.app_context():
-        cur = db.connection.cursor()
-        cur.execute("""SELECT * FROM user WHERE username='admin'""")
-        admin_user_row = cur.fetchone()
-        assert admin_user_row[1] == 'admin'
-        assert admin_user_row[3] == 'new_email@example.com'
-        assert admin_user_row[4] == 'firsttest'
-        assert admin_user_row[5] == 'lasttest'
-
-    # Reset booking details
-    client.post('booking/myaccount/editdetails',data={'username': 'admin', 'email': 'example@gmail.com',
-                                                    'fname': 'John', 'lname': 'Doe'})
-    auth.logout()
-
-
-
+# Change password to 123, logout, log back in and check our user session variable is set (we are logged in)
 def change_password(client, auth, app):
     auth.login(username='admin', password='1234')
     client.post('booking/myaccount/changepassword', data={'currentPassword': '1234', 'newPassword': '123',

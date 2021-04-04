@@ -27,6 +27,11 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+        <script>
+                document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.remove();
+                });
+            </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
@@ -36,7 +41,7 @@
   <h2>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></h2>
 
   <div class="standard-field">
-    <input class="standard-input" type="text" name="username" id="username" required />
+    <input class="standard-input" type="text" name="username" maxlength="16" id="username" required />
     <label class="standard-label" for="username">Username</label>
   </div>
 
@@ -50,11 +55,11 @@
     <label class="standard-label" for="password">Password</label>
   </div>
     <div class="standard-field">
-    <input class="standard-input" type="text" name="fname" id="fname" required />
+    <input class="standard-input" type="text" maxlength="14" name="fname" id="fname" required />
     <label class="standard-label" for="fname">First Name</label>
   </div>
     <div class="standard-field">
-    <input class="standard-input" type="text" name="lname" id="lname" required />
+    <input class="standard-input" type="text" maxlength="14"name="lname" id="lname" required />
     <label class="standard-label" for="lname">Last Name</label>
   </div>
 

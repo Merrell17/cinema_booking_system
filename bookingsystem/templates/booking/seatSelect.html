@@ -35,7 +35,7 @@
 
 
 
-</body>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
 const container = document.getElementById("container");
@@ -66,10 +66,10 @@ $('.seat').click((e) => {
     document.getElementById('ticket-count').innerHTML = quantity
     document.getElementById("total_value").innerHTML="£"+9.00*quantity +".00"
     document.getElementById("quantity").innerHTML = quantity + " Ticket(s)"
-    document.getElementById("book-btn").style.display = "inline-block"
+    document.getElementById("book-btn").style.visibility = "visible"
     if (quantity==0){
     	document.getElementById("quantity").innerHTML = "Select your seats!"
-    	document.getElementById("book-btn").style.display = "none"
+    	document.getElementById("book-btn").style.visibility = "hidden"
         document.getElementById("total_value").innerHTML="£0.00"
     }
     var all = $(".selected").map(function() {
@@ -88,9 +88,7 @@ for(var i in bookedSeats){
 
 
 $('#book-btn').click((e) => {
-
-
-  var all = $(".selected").map(function() {
+    var all = $(".selected").map(function() {
     return this.num;
 }).get();
 
@@ -106,7 +104,11 @@ $('#book-btn').click((e) => {
 
 <tr>
 <td class="left">Name</td>
+    {% if g.user %}
 <td class="right">Hugh Merrell</td>
+    {% else %}
+ <td class="right"></td>
+    {% endif %}
 </tr>
 <tr>
 <td class="left" >Film</td>

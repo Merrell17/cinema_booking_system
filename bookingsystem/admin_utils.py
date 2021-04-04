@@ -87,6 +87,11 @@ def add_screen():
         elif not screen_name.isdigit():
             error = 'Invalid screen number'
 
+        if int(row_count) > 18 or int(column_count) > 18:
+            error = 'Exceeded max screen size: maximum row and column count is 18'
+        if int(row_count) < 1 or int(column_count) < 1:
+            error = 'Screening dimensions are too small'
+
         cur.execute("""SELECT screen_name 
                         FROM auditorium
                         WHERE cinema_id = (%s)
@@ -185,8 +190,6 @@ def add_film():
 
     return render_template('adminutils/addFilm.html')
 
-def process_imdb_id(id):
-    pass
 
 
 @bp_admin.route('createscreening', methods=['GET', 'POST'])
@@ -209,6 +212,9 @@ def create_screening():
         # Get screening details
         cur = db.connection.cursor()
         screening_details = request.form
+        if (len(screening_details)) < 3:
+            flash('Enter valid details')
+            return redirect(url_for('admin_utils.create_screening'))
         screen_id = screening_details['screen']
         film_id = screening_details['films']
         start_time = screening_details['film_time']
@@ -217,12 +223,18 @@ def create_screening():
             flash("Enter a valid start time")
             return redirect(url_for('admin_utils.create_screening'))
 
+
         # Get selected film's duration
         cur.execute("""SELECT duration_min FROM movie WHERE id=(%s)""", (film_id,))
         duration = cur.fetchone()[0]
 
         # Make start time a datetime object and add film duration minutes to get end time
         start = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M")
+        now = datetime.datetime.now()
+        if not start > now:
+            flash("Screening must take place in the future")
+            return redirect(url_for('admin_utils.create_screening'))
+
         end_time = start + datetime.timedelta(minutes=duration)
         end_time = end_time.strftime("%Y-%m-%dT%H:%M")
 
@@ -297,7 +309,8 @@ def deletions():
             imgs_path = os.path.join(root_folder, images)
             img_location = os.path.join(imgs_path, movie_file)
             if not os.path.exists(img_location):
-                flash(imgs_path + movie_file + " doesnt exist")
+                pass
+               # flash(imgs_path + movie_file + " doesnt exist")
             else:
                 os.remove(img_location)
 

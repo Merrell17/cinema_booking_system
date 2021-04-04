@@ -101,7 +101,7 @@ def test_delete_auditorium(client, auth, app):
         cur.execute("""SELECT id FROM auditorium WHERE  cinema_id=(%s)""", (cinema_id,))
         auditorium_id = str(cur.fetchone()[0])
 
-        # SEnsure that  exists
+        # Ensure that  exists
         cur.execute("""SELECT * FROM auditorium WHERE cinema_id=(%s)""", (cinema_id,))
         deleted_cinema = cur.fetchone()
         assert deleted_cinema

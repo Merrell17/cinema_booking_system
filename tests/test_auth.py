@@ -19,8 +19,8 @@ def test_register(client, app):
         )
         assert cur.fetchone() is not None
 
-
-@pytest.mark.parametrize(('username', 'password', 'email', 'fname', 'lname' ), (
+#message
+@pytest.mark.parametrize(('username', 'password', 'email', 'fname', 'lname',), (
     ('', '', '', '',''),
     ('a', '', '', '', '' ),
     ('a', 'b','', '', '' ),
