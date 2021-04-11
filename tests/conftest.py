@@ -1,9 +1,13 @@
-import os
-import tempfile
-import pytest
 from bookingsystem import create_app
+import pytest
 from bookingsystem.extensions import db
 
+
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
 
 
 @pytest.fixture
@@ -28,33 +32,27 @@ def app():
 
     yield app
 
-
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
 
-
-class AuthActions(object):
+# Used to log in and out in tests
+# Can change username and password to login to admin account
+# See Flask Tutorial
+class Authentication(object):
     def __init__(self, client):
         self._client = client
-
-    def login(self, username='test', password='test'):
-        return self._client.post(
-            '/auth/login',
-            data={'username': username, 'password': password}
-        )
 
     def logout(self):
         return self._client.get('/auth/logout')
 
+    # username = 'admin', pasword='1234'
+    def login(self, username='test', password='test'):
+        return self._client.post('/auth/login', data={'username': username, 'password': password})
+
 
 @pytest.fixture
 def auth(client):
-    return AuthActions(client)
+    return Authentication(client)
 
 
