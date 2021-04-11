@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, url_for, Blueprint, flash, se
 from bookingsystem.extensions import db
 import re
 import datetime
-from bookingsystem.auth import login_required
+from bookingsystem.auth import check_login
 from werkzeug.security import check_password_hash, generate_password_hash
 
 bp_booking = Blueprint('booking', __name__, url_prefix='/booking', template_folder='templates/booking')
@@ -92,21 +92,22 @@ def cinema_times(name, week=0):
                     JOIN cinema C ON A.Cinema_id = C.id
                     WHERE C.name = (%s) AND S.Screening_Start > NOW()
                     ORDER BY M.title, S.Screening_Start""", (name,))
-
     film_times = cur.fetchall()
 
     # Create dictionary with keys being film titles and corresponding list of screening time values
     times = {}
-    for t in film_times:
-        if t[0] not in times.keys():
-            times[t[0]] = [(t[1].strftime('%d/%m  %H:%M'), t[2])]
+    for screening in film_times:
+        # t is (title, screen start, screening id)
+        if screening[0] not in times.keys():
+            times[screening[0]] = [(screening[1].strftime('%d/%m  %H:%M'), screening[2])]
         else:
-            times[t[0]].append((t[1].strftime('%d/%m  %H:%M'), t[2]))
+            times[screening[0]].append((screening[1].strftime('%d/%m  %H:%M'), screening[2]))
 
     # Shift the date by the number of weeks selected and get all screenings
     dt = datetime.datetime.today()
     dt = dt + datetime.timedelta(weeks=week)
     week_dates = [dt + datetime.timedelta(days=i) for i in range(7)]
+    # Create list of days to pass to HTML template
     days = []
     for day in week_dates:
         days.append(day.strftime('%d/%m'))
@@ -136,8 +137,8 @@ def seat_select(screening):
     cur.execute("""     SELECT seat_id
                         FROM seat_reserved SR JOIN screening SCR on SR.screening_id=SCR.id 
                         WHERE SCR.id = (%s)""", (screening,))
-    res = cur.fetchall()
-    reserved_ids = [x[0] for x in res]
+    taken_seats = cur.fetchall()
+    reserved_ids = [taken_seat[0] for taken_seat in taken_seats]
 
     reserved_numbers = []
     for s in reserved_ids:
@@ -160,7 +161,7 @@ def seat_select(screening):
 
 
 @bp_booking.route('/processticket/<auditorium>/<screening>/', methods=['GET', 'POST'])
-@login_required
+@check_login
 def process_ticket(screening, auditorium):
     cur = db.connection.cursor()
     # Get seat ID's
@@ -189,13 +190,14 @@ def process_ticket(screening, auditorium):
     if query is None:
         return (redirect(url_for('booking.home')))
 
+    # Get Booking Information
     title = query[0]
     datetime = query[1]
     date = datetime.strftime('%d %B')
-    # Remove seconds
+    # Remove seconds for UI
     time = datetime.strftime('%X')[:-3]
     total = format(len(session['seats']) * 9.00, '.2f')
-    # Get name
+    # Get name for ticket
     cur.execute("""SELECT first_name, last_name 
                     FROM `user` 
                     WHERE id=(%s)""", (session['user_id'], ))
@@ -203,6 +205,7 @@ def process_ticket(screening, auditorium):
     fname = query[0]
     lname = query[1]
 
+    # If user press pay button
     if request.method == "POST":
 
         if 'expiration' in request.form:
@@ -210,7 +213,7 @@ def process_ticket(screening, auditorium):
             expiration_date = request.form['expiration']
             card_number = request.form['card_number']
 
-
+            # Dont store card details
             expiration_date = '2021-11-11'
             card_number = '0000343434341323'
             card_type = 'visa'
@@ -244,18 +247,18 @@ def process_ticket(screening, auditorium):
                            fname=fname, lname=lname)
 
 
-### x for x, last query redundant?
+
 # Check this is the users account?
 @bp_booking.route('/confirmation/<user>/<reservation>', methods=['GET', 'POST'])
-@login_required
+@check_login
 def confirmed(user, reservation):
     cur = db.connection.cursor()
-
+    # Get list of user's reserved seats
     cur.execute("""SELECT S.number
                     FROM seat S JOIN seat_reserved SR ON SR.seat_id=S.id
                     WHERE SR.reservation_id=(%s)""", (reservation,))
     seats = [seat[0] for seat in cur.fetchall()]
-
+    # Get user name
     cur.execute("""SELECT first_name, last_name
                     FROM `user` 
                     WHERE id = (%s)""", ((session['user_id']),))
@@ -281,7 +284,7 @@ def confirmed(user, reservation):
 
 
 @bp_booking.route('/expiredconfirmation/<user>/<reservation>', methods=['GET', 'POST'])
-@login_required
+@check_login
 def expired_confirmed(user, reservation):
     cur = db.connection.cursor()
     cur.execute("""SELECT first_name, last_name
@@ -306,9 +309,9 @@ def expired_confirmed(user, reservation):
                            seat_count=seat_count, title=title, fname=fname, lname=lname, date=date, time=time)
 
 
-# Correct film title and time but wrong ID tied to it.
+
 @bp_booking.route('myaccount')
-@login_required
+@check_login
 def my_account():
     cur = db.connection.cursor()
     cur.execute("""SELECT id
@@ -327,7 +330,7 @@ def my_account():
                             """, (reservation_id,))
         reservation = cur.fetchone()
 
-        # Title, Time, ID
+        # (Title, Time, ID)
         reservation_ = (reservation[0], reservation[1].strftime('%d-%m-%Y  %H:%M'), reservation[2])
         user_reservations.append(reservation_)
 
@@ -345,12 +348,12 @@ def my_account():
 
 
 @bp_booking.route('myaccount/editdetails', methods=['GET', 'POST'])
-@login_required
+@check_login
 def edit_details():
     cur = db.connection.cursor()
     cur.execute("""SELECT *
-                        FROM user
-                        WHERE id=(%s)""", (session['user_id'],))
+                    FROM user
+                    WHERE id=(%s)""", (session['user_id'],))
     user_details = cur.fetchone()
     current_username = user_details[1]
     current_email = user_details[3]
@@ -399,7 +402,7 @@ def edit_details():
 
 
 @bp_booking.route('myaccount/changepassword', methods=['GET', 'POST'])
-@login_required
+@check_login
 def change_password():
     if request.method == 'POST':
         current_password = request.form['currentPassword']

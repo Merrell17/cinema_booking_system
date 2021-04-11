@@ -49,7 +49,7 @@
 
 .seat {
 
-  border: 0.1em solid #ddd;
+  border: 0.1em solid #dddddd;
   text-align: center;
   cursor: pointer;
 }
@@ -60,7 +60,7 @@
 
 .booked {
 
-  border: 0.1em solid #ddd;
+  border: 0.1em solid #dddddd;
   background-color: grey;
   cursor: not-allowed;
 }

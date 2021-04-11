@@ -24,7 +24,7 @@
                     </div>
                 <script>
                 document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
-                    e.currentTarget.parentElement.remove();
+                    e.currentTarget.parentElement.style.visibility = 'hidden';
                 });
             </script>
                 {% endfor %}

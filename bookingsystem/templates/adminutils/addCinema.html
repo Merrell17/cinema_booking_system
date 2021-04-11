@@ -20,8 +20,8 @@
 <body>
 <div class="wrapper">
         {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
+            {% if messages %}
+                {% for message in messages %}
             <div class="alert alert-primary alert-dismissible fade show" role="alert">
                 <span>{{ message }}</span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -30,7 +30,7 @@
             </div>
             <script>
                 document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
-                    e.currentTarget.parentElement.remove();
+                    e.currentTarget.parentElement.style.visibility = 'hidden';
                 });
             </script>
         {% endfor %}

@@ -6,15 +6,15 @@ import imdb
 import datetime
 from bookingsystem.extensions import db
 import string
-from bookingsystem.auth import admin_required
+from bookingsystem.auth import check_admin
 
 bp_admin = Blueprint('admin_utils', __name__, url_prefix='/adminutils', template_folder='templates/adminutils')
 
-address_cinema_id = 55
+
 
 # Add Cinema to database
 @bp_admin.route('addcinema', methods=['GET', 'POST'])
-@admin_required
+@check_admin
 def add_cinema():
     # Get form details
     if request.method == "POST":
@@ -25,7 +25,7 @@ def add_cinema():
         city = address_details['city']
         county = address_details['county']
         postcode = address_details['postcode']
-        #global address_cinema_id
+
         cur = db.connection.cursor()
 
         # Check for errors
@@ -34,7 +34,7 @@ def add_cinema():
             error = 'title is required.'
 
         else:
-            # Remove unwanted punctuation
+            #
             exclude = set(string.punctuation)
             exclude.remove("'")
             cinema_name = ''.join(ch for ch in cinema_name if ch not in exclude)
@@ -64,7 +64,7 @@ def add_cinema():
 
 
 @bp_admin.route('addscreens', methods=['GET', 'POST'])
-@admin_required
+@check_admin
 def add_screen():
     cur = db.connection.cursor()
     cinemas = cur.execute("SELECT * FROM cinema")
@@ -125,33 +125,38 @@ def add_screen():
     return render_template('adminutils/addScreens.html', cinemaDetails=cinema_details,)
 
 # Check for imdb being used twice
-# Try catch for images, split Imdb into func
 @bp_admin.route('addfilm', methods=['GET', 'POST'])
-@admin_required
+@check_admin
 def add_film():
     if request.method == "POST":
         cur = db.connection.cursor()
         imbd_id = request.form['imdb_id']
         imbd_film = None
         error = None
+        duration = None
         if imbd_id != '':
             # Remove 'tt' that some users leave present
             imbd_id = ''.join([i for i in imbd_id if not i.isalpha()])
             ia = imdb.IMDb()
-            print(imbd_id)
+
             try:
                 imbd_film = ia.get_movie(imbd_id)
                 title = imbd_film['title']
                 directors = []
+                # In case of multiple directors
                 for dir in imbd_film['directors']:
                     directors.append(str(dir['name']))
                 duration = imbd_film['runtimes'][0]
+                print(duration)
                 description = imbd_film['plot outline']
                 director = ' '.join(directors)
             except imdb._exceptions.IMDbParserError:
                 title = ''
                 imbd_film = None
-                pass
+
+            except:
+                title = ''
+                imbd_film = None
 
         else:
             film_details = request.form
@@ -164,7 +169,9 @@ def add_film():
             error = 'Invalid IMDb ID, enter details manually or try again.'
         elif not title:
             error = 'Valid title is required.'
-        elif not duration or not duration.isdigit():
+        elif not duration:
+            error = 'Valid duration is required'
+        elif not duration.isdigit():
             error = 'Valid duration is required'
         else:
             exclude = set(string.punctuation)
@@ -183,7 +190,7 @@ def add_film():
             db.connection.commit()
             cur.close()
 
-            # Testing purposes
+
             try:
                 # Ensure user uploaded a movie
                 image = request.files['movie_image']
@@ -197,12 +204,11 @@ def add_film():
         else:
             flash(error)
 
-    return render_template('adminutils/addFilm.html')
-
+    return render_template('adminutils/addFilm.html', )
 
 
 @bp_admin.route('createscreening', methods=['GET', 'POST'])
-@admin_required
+@check_admin
 def create_screening():
 
     cur = db.connection.cursor()
@@ -212,9 +218,9 @@ def create_screening():
     else:
         film_details = []
 
-    auditorium_details = cur.execute("""SELECT auditorium.id, name, screen_name FROM auditorium 
-                                        INNER JOIN cinema ON auditorium.cinema_id = cinema.id
-                                        ORDER BY cinema.name, auditorium.screen_name""")
+    cur.execute("""SELECT auditorium.id, name, screen_name FROM auditorium 
+                    INNER JOIN cinema ON auditorium.cinema_id = cinema.id
+                    ORDER BY cinema.name, auditorium.screen_name""")
     auditorium_details = cur.fetchall()
 
     if request.method == "POST":
@@ -269,17 +275,15 @@ def create_screening():
                            auditoriumDetails=auditorium_details)
 
 @bp_admin.route('makedeletions', methods=['GET', 'POST'])
-@admin_required
+@check_admin
 def deletions():
     # Get database items for template to delete
     cur = db.connection.cursor()
-
     cinemas = cur.execute("SELECT * FROM cinema")
     if cinemas > 0:
         cinema_details = cur.fetchall()
     else:
         cinema_details = []
-
 
     movies = cur.execute("SELECT id, title FROM movie")
     if movies > 0:

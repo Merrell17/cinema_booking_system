@@ -33,7 +33,7 @@
             </div>
         <script>
                 document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
-                    e.currentTarget.parentElement.remove();
+                    e.currentTarget.parentElement.style.visibility = 'hidden';
                 });
             </script>
         {% endfor %}
@@ -57,7 +57,7 @@
     </select>
 
     <label for="film_time" style="margin-top: 10px;">Screening Time</label>
-    <input type="datetime-local" name="film_time" placeholder="yyyy-mm-dd"/>
+    <input type="datetime-local" name="film_time" placeholder="YYYY-MM-DDThh:mm"/>
 
 
     <button type="submit" style="margin-top: 30px;">Create Screening</button>
@@ -66,7 +66,6 @@
 </body>
 </html>
 {% endblock %}
-
 
 
 

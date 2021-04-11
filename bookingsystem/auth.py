@@ -107,43 +107,52 @@ def load_logged_in_user():
 
 @bp_auth.route('/logout')
 def logout():
+    # Clear session variables so user doesn't have selected cinema or my account
     session.clear()
-    flash("You have been logged out", "info")
+    flash("You have been logged out")
     return redirect(url_for('auth.login'))
 
 
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view
-
-
-def admin_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
+def check_admin(admin_required_page):
+    @functools.wraps(admin_required_page)
+    def wrapper(**kwargs):
+        # Check g for login before database search
         if g.user is None:
             flash('Login as an admin to access this page')
             return redirect(url_for('auth.login'))
 
+        # Pull user details check if they're an admin
         cur = db.connection.cursor()
         cur.execute('SELECT is_admin FROM user WHERE id = (%s)', (session['user_id'],))
         is_admin = cur.fetchone()[0]
 
         if not is_admin:
-            flash("Login as an administrator to access this page")
+            flash("Your account does not have the privileges required to view to this page")
             return redirect(url_for('auth.login'))
 
-        return view(**kwargs)
+        return admin_required_page(**kwargs)
 
-    return wrapped_view
+    return wrapper
 
 
-# A view to generate admin accounts for marking purposes
+# View wrapper used to stop users accessing login required pages
+def check_login(login_required_page):
+    @functools.wraps(login_required_page)
+    def wrapper(**kwargs):
+        # Check g variable which is set when users login, if none redirect
+        if g.user is None:
+            flash("You must be logged in to access this page")
+            return redirect(url_for('auth.login'))
+
+        return login_required_page(**kwargs)
+
+    return wrapper
+
+
+
+
+
+# A view to generate admin accounts for testing purposes
 @bp_auth.route('/createadmin', methods=('GET', 'POST'))
 def create_admin():
 
@@ -155,6 +164,7 @@ def create_admin():
     cur = db.connection.cursor()
     cur.execute('SELECT id FROM user WHERE username = (%s)', (usern,))
 
+    # Ensure that randomly generated details don't cause issues
     error = None
     if cur.fetchone() is not None:
         error = 'User {} is already registered.'.format(usern)
@@ -173,4 +183,4 @@ def create_admin():
             (usern, generate_password_hash(passw), email, 'John', 'Doe', 1))
         db.connection.commit()
 
-    return render_template('auth/generateAdmin.html', usern = usern, passw=passw, email=email)
+    return render_template('auth/generateAdmin.html', usern=usern, passw=passw, email=email)

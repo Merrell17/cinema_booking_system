@@ -30,7 +30,7 @@
             </div>
             <script>
                 document.querySelector('.alert-dismissible button.close').addEventListener('click', (e) => {
-                    e.currentTarget.parentElement.remove();
+                    e.currentTarget.parentElement.style.visibility = 'hidden';
                 });
             </script>
         {% endfor %}
@@ -39,9 +39,10 @@
 
 
 
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" class="signup" action="" enctype="multipart/form-data">
         <h1>Add a Film</h1>
         Image <input type="file" name="movie_image" accept="image/*" />
+
         <br>
 
     <h3>Use IMDb ID </h3>
