@@ -11,8 +11,13 @@ instance/
 .pytest_cache/
 .coverage
 htmlcov/
+data/
+venv/
+instance/
 
-dist/
+
+
+dist
 build/
 <<<<<<< HEAD
 *.egg-info/
